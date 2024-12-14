@@ -42,7 +42,7 @@ export const Overlay = ({ keyValue = 'inner' }: { keyValue: 'inner' | 'innerCirc
 	}
 
 	return (
-		<Canvas style={Platform.OS === 'android' ? styles.container : StyleSheet.absoluteFillObject}>
+		<Canvas className={`${Platform.OS === 'android'} ? 'flex-1' : ${StyleSheet.absoluteFillObject}`}>
 			<DiffRect
 				inner={selectedInner}
 				outer={outer}
@@ -54,7 +54,7 @@ export const Overlay = ({ keyValue = 'inner' }: { keyValue: 'inner' | 'innerCirc
 			<DiffRect
 				inner={selectedInner}
 				outer={outer}
-				color={Colors.linkColor}
+				color={Colors.secondary}
 				opacity={0.7}
 				style={'stroke'}
 				strokeWidth={3}
@@ -62,8 +62,3 @@ export const Overlay = ({ keyValue = 'inner' }: { keyValue: 'inner' | 'innerCirc
 		</Canvas>
 	);
 };
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-});

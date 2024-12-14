@@ -2,8 +2,8 @@ import React from "react";
 
 import { useLocalSearchParams } from "expo-router";
 import useFlashlight from "@/hooks/useFlashlight";
-import FlashlightField from "@/components/camera/ui/FlashlightField/FlashlightField";
-import QrCodeScanner from "@/components/camera/ui/QrCodeScanner/QrCodeScanner";
+import FlashlightField from "@/components/camera/FlashlightField/FlashlightField";
+import QrCodeScanner from "@/components/camera/QrCodeScanner/QrCodeScanner";
 import ModalAction from "@/components/ModalAction";
 import useModal from "@/hooks/useModal";
 
@@ -32,4 +32,3 @@ const QrScannerServicePage = () => {
 };
 
 export default QrScannerServicePage;
-
