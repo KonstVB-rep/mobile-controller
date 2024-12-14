@@ -1,43 +1,82 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
+import { Redirect, Tabs } from "expo-router";
+import React from "react";
+// import { Platform } from "react-native";
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import TabBarBackground from "@/components/ui/TabBarBackground";
+import TabIcon from "@/components/tabs-layout/TabIcon/TabIcon";
+
+
+import { Colors } from "@/constants/styles-system";
+import { FontAwesome6, SimpleLineIcons } from "@expo/vector-icons";;
+import { useGlobalContext } from "@/context/useGlobalContext";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+
+  const { isLoggedIn, user, isLoading } = useGlobalContext();
+
+  if (!isLoading && isLoggedIn) return <Redirect href="/" />;
+
+
+  // if (!accessToken) {
+  //   return <Redirect href="/login" />;
+  // }
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
+        tabBarShowLabel: false,
+        tabBarActiveTintColor: Colors.white,
+        tabBarInactiveTintColor: Colors.gray,
         tabBarBackground: TabBarBackground,
-        tabBarButton: HapticTab,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
+        headerStyle: {
+          backgroundColor: Colors.black100,
+          borderColor: Colors.transparent,
+          borderBottomColor: Colors.black200,
+        },
+        headerTitleStyle: { color: Colors.white },
+        headerTitleAlign: "center",
+        sceneStyle: { backgroundColor: Colors.primary },
+        // tabBarStyle: Platform.select({
+        //   ios: {
+        //     // Use a transparent background on iOS to show the blur effect
+        //     position: "absolute",
+        //   },
+        //   default: {
+        //     backgroundColor: Colors.primary,
+        //     borderTopWidth: 0,
+        //     borderTopColor: Colors.primary,
+        //     height: 80,
+        //   },
+        // }),
+        tabBarStyle: {
+          backgroundColor: Colors.black100,
+          borderTopWidth: 0,
+          borderTopColor: Colors.primary,
+          height: 80,
+        },
+        tabBarActiveBackgroundColor: Colors.secondary,
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: "Услуги",
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon name="Услуги" color={color} focused={focused}>
+              <FontAwesome6 name="list" size={24} color={color} />
+            </TabIcon>
+          ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="logout"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: "Выxoд",
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon name="Выйти" color={color} focused={focused}>
+              <SimpleLineIcons name="logout" size={24} color={color} />
+            </TabIcon>
+          ),
         }}
       />
     </Tabs>

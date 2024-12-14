@@ -7,13 +7,17 @@ import "react-native-reanimated";
 
 import "../global.css";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Colors } from "@/constants/styles-system";
+import GlobalProvider from "@/context/GlobalProvider";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
+    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
+    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
   });
 
   useEffect(() => {
@@ -29,12 +33,22 @@ export default function RootLayout() {
   }
 
   return (
-    <SafeAreaProvider>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="services" options={{ headerShown: false }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </SafeAreaProvider>
+    <GlobalProvider>
+      <SafeAreaProvider>
+        <Stack
+          screenOptions={{
+            // contentStyle: {
+            //   backgroundColor: Colors.black100,
+            // },
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="services" />
+          <Stack.Screen name="login" />
+        </Stack>
+        <StatusBar style="light" backgroundColor={Colors.primary} />
+      </SafeAreaProvider>
+    </GlobalProvider>
   );
 }

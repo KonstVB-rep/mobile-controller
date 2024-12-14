@@ -3,17 +3,24 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
-  SafeAreaView,
   TouchableOpacity,
   StyleSheet,
   Alert,
+  Platform,
 } from "react-native";
 import NfcManager, { NfcEvents } from "react-native-nfc-manager";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+const styleWrapper = "flex-1 items-center justify-center gap-4";
+const styleText = "text-white text-2xl";
 
 const NFCReader = () => {
   const [hasNfc, setHasNFC] = useState<boolean | null>(null);
 
   useEffect(() => {
+    if (Platform.OS === "web") {
+      return;
+    }
     const checkIsSupported = async () => {
       const deviceIsSupported = await NfcManager.isSupported();
 
@@ -40,38 +47,33 @@ const NFCReader = () => {
     await NfcManager.registerTagEvent();
   };
 
-  if (hasNfc === null) return null;
-
-  if (!hasNfc) {
+  if (hasNfc === null) {
     return (
-      <View style={styles.wrapper}>
-        <Text style={styles.text}>NFC not supported</Text>
+      <View className={styleWrapper}>
+        <Text className={styleText}>Your device</Text>
+        <Text className={styleText}>does not support NFC</Text>
+      </View>
+    );
+  }
+
+  if (!hasNfc || Platform.OS === "web") {
+    return (
+      <View className={styleWrapper}>
+        <Text className={styleText}>NFC not supported</Text>
       </View>
     );
   }
 
   return (
-    <SafeAreaView style={styles.wrapper}>
+    <SafeAreaView className={styleWrapper}>
       <TouchableOpacity onPress={readTag}>
-        <Text style={styles.text}>Scan a Tag</Text>
+        <Text className={styleText}>Scan a Tag</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={readTag}>
-        <Text style={styles.text}>Cancel Scan a Tag</Text>
+        <Text className={styleText}>Cancel Scan a Tag</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  text: {
-    color: Colors.secondary,
-    fontSize: FontSize.f24,
-  },
-});
 
 export default NFCReader;
