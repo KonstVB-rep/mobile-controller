@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Pressable } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Pressable,
+  SafeAreaView,
+  Platform,
+} from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 
@@ -7,15 +14,9 @@ import { Feather, MaterialIcons } from "@expo/vector-icons";
 
 import { useWindowDimensions } from "react-native";
 import SuccessNotification from "@/components/SuccessNotification";
-import {
-  Gaps,
-  FontFamily,
-  FontSize,
-  HEADER_HEIGHT,
-  Radius,
-  Colors,
-} from "@/constants/styles-system";
+import { HEADER_HEIGHT, Colors } from "@/constants/styles-system";
 import Button from "@/components/ui/Button";
+import { Overlay } from "../Overlay/Overlay";
 
 const QrCodeScanner = ({
   isOnFlashlight,
@@ -68,27 +69,25 @@ const QrCodeScanner = ({
 
   if (!permission) {
     return (
-      <View className="relative flex-1 bg-black-100">
+      <SafeAreaView className="relative flex-1 bg-black-100">
         <Feather name="camera-off" size={120} color={Colors.white} />
         <Text className="text-white text-2xl font-pmedium">
           Запрашивает разрешение камеры
         </Text>
-      </View>
+      </SafeAreaView>
     );
   }
   if (!permission.granted) {
     return (
-      <View className="relative flex-1 bg-black-100">
-        <View
-          className="absolute to-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 gap-5 flex-cols align-center justify-center"
-        >
+      <SafeAreaView className="relative flex-1 bg-black-100">
+        <View className="absolute to-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 gap-5 flex-cols align-center justify-center">
           <Feather name="camera-off" size={120} color={Colors.white} />
           <Text className="text-white text-2xl font-pmedium">
             Нет доступа к камере
           </Text>
           <Button onPress={requestPermission} text="Предоставьте разрешение" />
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 
@@ -105,11 +104,11 @@ const QrCodeScanner = ({
           barcodeTypes: ["qr", "pdf417"],
         }}
         enableTorch={isOnFlashlight}
-        className='absolute inset-0 -z-1'
+        className="absolute inset-0 -z-1"
       />
-      {/* {Platform.OS === "ios" || Platform.OS === "android" ? (
+      {Platform.OS === "ios" || Platform.OS === "android" ? (
         <Overlay keyValue={!showBtnScan ? "inner" : "innerCircle"} />
-      ) : null} */}
+      ) : null}
       {showBtnScan && (
         <Pressable
           onPress={handlePressScan}
@@ -117,7 +116,9 @@ const QrCodeScanner = ({
             width: pressed ? 140 : 120,
             height: pressed ? 140 : 120,
           })}
-          className={`absolute h-[120px] w-[120px] bg-black-100 rounded-fill top-[${ windowHeight / 2 - HEADER_HEIGHT}px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 gap-5 flex-cols align-center justify-center`}
+          className={`absolute h-[120px] w-[120px] bg-black-100 rounded-fill top-[${
+            windowHeight / 2 - HEADER_HEIGHT
+          }px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 gap-5 flex-cols align-center justify-center`}
         >
           <MaterialIcons
             name="qr-code-scanner"
@@ -131,4 +132,3 @@ const QrCodeScanner = ({
 };
 
 export default QrCodeScanner;
-

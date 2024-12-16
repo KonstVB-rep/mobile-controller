@@ -6,11 +6,12 @@ import {
   Pressable,
   StyleSheet,
   ImageBackground,
+  SafeAreaView,
 } from "react-native";
 
 const Tab = () => {
   return (
-    <View className="flex-1 items-center justify-center relative gap-12">
+    <SafeAreaView className="flex-1 items-center justify-center relative gap-12">
       <ImageBackground
         source={require("@/assets/images/doubt.png")}
         resizeMode="contain"
@@ -44,7 +45,7 @@ const Tab = () => {
           </Link>
         </Pressable>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
