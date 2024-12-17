@@ -1,13 +1,13 @@
 import React from "react";
-import { Redirect, Stack } from "expo-router";
+import { Redirect, Slot, Stack } from "expo-router";
 import { Colors } from "@/constants/styles-system";
 import { useGlobalContext } from "@/context/useGlobalContext";
 
 const ServicesLayout = () => {
   
-  const { isLoggedIn, user, isLoading } = useGlobalContext();
+  // const { isLoggedIn, user, isLoading } = useGlobalContext();
 
-  if (!isLoading && isLoggedIn) return <Redirect href="/" />;
+  // if (!isLoading && isLoggedIn) return <Redirect href="/" />;
 
   return (
     <Stack

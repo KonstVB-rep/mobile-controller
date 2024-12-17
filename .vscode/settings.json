@@ -1,5 +1,9 @@
 {
   "files.autoSave": "afterDelay",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "cSpell.words": ["Pressable", "сканер"]
+  "cSpell.words": [
+    "Pressable",
+    "сканер"
+  ],
+  "editor.formatOnSave": true
 }

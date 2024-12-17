@@ -7,13 +7,19 @@ import {
   Image,
 } from "react-native";
 import React from "react";
-import { Link, router } from "expo-router";
+import { Link, Redirect, router } from "expo-router";
 import CustomButton from "@/components/ui/CustomButton";
 import FormField from "@/components/ui/FormField";
-import { signIn } from "@/lib/appwrite";
+import { getCurrentUser, signIn } from "@/lib/appwrite";
+import { useGlobalContext } from "@/context/useGlobalContext";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+import { IUser } from "@/context/GlobalProvider";
+import { AppwriteException } from "react-native-appwrite";
 
 const SignIn = () => {
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
+  const { isLoading, isLoggedIn, setUser, setIsLoggedIn } = useGlobalContext();
+
   const [form, setForm] = React.useState({
     email: "",
     password: "",
@@ -23,7 +29,7 @@ const SignIn = () => {
 
   const submit = async () => {
     if (isEmptyForm) {
-      Alert.alert("All fields are required.Please fill in all fields");
+      return Alert.alert("Все поля обязательные.Пожалуйста,заполните их.");
     }
 
     setIsSubmitting(true);
@@ -31,13 +37,25 @@ const SignIn = () => {
     try {
       await signIn(form.email, form.password);
 
-      router.replace("/");
+      const result = await getCurrentUser();
+      setUser(result as IUser);
+      setIsLoggedIn(true);
+
+      Alert.alert(`Добро пожаловать, ${result?.username}!`);
+
+      router.replace("/(tabs)");
     } catch (error) {
-      Alert.alert(error as string);
+      if (error instanceof Error || error instanceof AppwriteException) {
+        Alert.alert(error.message);
+      } else Alert.alert(error as string);
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  if (!isLoading && isLoggedIn) {
+    return <Redirect href="/(tabs)" />;
+  }
 
   return (
     <SafeAreaView className="bg-primary h-full grow">
@@ -76,12 +94,15 @@ const SignIn = () => {
           />
 
           <CustomButton
-            title={"Войти"}
+            title="Войти"
             onPress={submit}
             isLoading={isSubmitting}
-            containerStyles="mt-5"
+            containerStyles="mt-5 rounded-xl"
             textStyles="text-xl text-white font-psemibold"
           />
+          <Link href="/(tabs)" className="text-white text-xl font-psemibold">
+            Tabs
+          </Link>
         </View>
       </ScrollView>
     </SafeAreaView>

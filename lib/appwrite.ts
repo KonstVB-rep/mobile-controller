@@ -3,33 +3,27 @@ import {
   Account,
   Databases,
   Query,
+  AppwriteException,
 } from "react-native-appwrite";
-import {
-  REACT_APP_ENDPOINT,
-  REACT_APP_PLATFORM,
-  REACT_APP_PROJECT_ID,
-  REACT_APP_DATABASE_ID,
-  REACT_APP_USER_COLLECTION_ID,
-} from "@env";
+
 
 export const appWriteConfig = {
-  endpoint: REACT_APP_ENDPOINT,
-  platform: REACT_APP_PLATFORM,
-  projectId: REACT_APP_PROJECT_ID,
-  databaseId: REACT_APP_DATABASE_ID,
-  userCollectionId: REACT_APP_USER_COLLECTION_ID,
+  endpoint: process.env.EXPO_PUBLIC_ENDPOINT!,
+  platform: process.env.EXPO_PUBLIC_PLATFORM!,
+  projectId: process.env.EXPO_PUBLIC_PROJECT_ID!,
+  databaseId: process.env.EXPO_PUBLIC_DATABASE_ID!,
+  userCollectionId: process.env.EXPO_PUBLIC_USER_COLLECTION_ID!,
 };
 
 // Init your React Native SDK
 const client = new Client();
 const database = new Databases(client);
+const account = new Account(client);
 
 client
   .setEndpoint(appWriteConfig.endpoint) // Your Appwrite Endpoint
   .setProject(appWriteConfig.projectId)
   .setPlatform(appWriteConfig.platform);
-
-const account = new Account(client);
 
 // export const setClientJwt = async (jwt: string) => {
 //   client.setJWT(jwt); //  метод  у Client
@@ -37,29 +31,54 @@ const account = new Account(client);
 
 export const signOut = async () => {
   try {
+
+    const currentUser = await account.get();
+    console.log("Текущий пользователь:", currentUser);
+
+    // Проверяем, есть ли активная сессия
+    const session = await account.getSession("current");
+    console.log("Активная сессия:", session);
+
+    // Удаляем текущую сессию
     await account.deleteSession("current");
-    // await SecureStoreJwt.deleteToken();
+    console.log("Сессия успешно удалена.");
   } catch (error) {
-    console.log(error, "error");
+    if (error instanceof AppwriteException && error?.message.includes("missing scope (account)")) {
+      console.warn("Пользователь уже не авторизован.");
+    } else {
+      console.error("Ошибка при удалении сессии:", error);
+    }
   }
 };
 
 export const signIn = async (email: string, password: string) => {
   try {
-    await signOut();
-
+    
     const session = await account.createEmailPasswordSession(email, password);
-
-    // const { jwt } = await account.createJWT();
-
-    // await SecureStoreJwt.saveToken(jwt);
-
-    // await setClientJwt(jwt);
 
     return session;
   } catch (error) {
-    console.log(error, "error");
-    throw new Error(error as string);
+    if(error instanceof AppwriteException){
+      if(error.code === 400){
+        throw new Error("Пользователь с таким email уже существует.");
+      }
+      if(error.code === 401){
+        throw new Error("Неверные учетные данные.");
+      }
+      if(error.code === 404){
+        throw new Error("Пользователь с таким email не зарегистрирован.");
+      }
+      if(error.code === 409){
+        throw new Error("Пользователь с таким email уже существует.");
+      }
+      if(error.code === 500){
+        throw new Error("Внутренняя ошибка сервера.");
+      }
+      if(error.code === 503){
+        throw new Error("Сервер временно недоступен.");
+      }
+      throw new Error('Неверные учетные данные.');
+    }
   }
 };
 
@@ -77,11 +96,11 @@ export const getCurrentUser = async () => {
       [Query.equal("accountId", currentAccount.$id)]
     );
 
+    console.log(currentUser, "currentUser");
+
     if (!currentUser) {
       throw new Error("Failed to get current user");
     }
-
-    console.log(currentUser, "currentUser");
     return currentUser.documents[0];
   } catch (error) {
     console.log(error, "error");
@@ -112,5 +131,17 @@ export const getCurrentUser = async () => {
 //     } else {
 //       console.error("Неизвестная ошибка:", error);
 //     }
+//   }
+// };
+
+
+// export const isAuthenticated = async (): Promise<boolean> => {
+//   try {
+//     const session = await account.get(); // Проверка текущей сессии пользователя
+//     console.log("Authenticated user:", session);
+//     return true;
+//   } catch (error) {
+//     console.log("User is not authenticated:", error);
+//     return false;
 //   }
 // };

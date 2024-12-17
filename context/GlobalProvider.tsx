@@ -2,8 +2,8 @@ import { getCurrentUser } from "@/lib/appwrite";
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
 import { Models } from "react-native-appwrite";
 
-type IUser = {
-  name: string;
+export type IUser = {
+  username: string;
   email: string;
   accountId: string;
 } & Models.Document;
@@ -13,7 +13,7 @@ interface IGlobalContext {
   user: IUser | null;
   isLoading: boolean;
   setIsLoggedIn: (value: boolean) => void;
-  setUser: (user: IUser) => void;
+  setUser: (user: IUser | null) => void;
 }
 
 const INITIAL_CONTEXT: IGlobalContext = {
@@ -54,7 +54,9 @@ const GlobalProvider = ({ children }: PropsWithChildren) => {
       .catch((err) => {
         console.log(err);
       })
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   return (
@@ -67,4 +69,3 @@ const GlobalProvider = ({ children }: PropsWithChildren) => {
 };
 
 export default GlobalProvider;
-

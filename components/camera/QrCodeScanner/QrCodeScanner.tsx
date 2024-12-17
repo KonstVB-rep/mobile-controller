@@ -17,6 +17,7 @@ import SuccessNotification from "@/components/SuccessNotification";
 import { HEADER_HEIGHT, Colors } from "@/constants/styles-system";
 import Button from "@/components/ui/Button";
 import { Overlay } from "../Overlay/Overlay";
+import CustomButton from "@/components/ui/CustomButton";
 
 const QrCodeScanner = ({
   isOnFlashlight,
@@ -80,12 +81,17 @@ const QrCodeScanner = ({
   if (!permission.granted) {
     return (
       <SafeAreaView className="relative flex-1 bg-black-100">
-        <View className="absolute to-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 gap-5 flex-cols align-center justify-center">
+        <View className="flex-1 gap-5 flex-cols items-center justify-center">
           <Feather name="camera-off" size={120} color={Colors.white} />
           <Text className="text-white text-2xl font-pmedium">
             Нет доступа к камере
           </Text>
-          <Button onPress={requestPermission} text="Предоставьте разрешение" />
+          <CustomButton
+            onPress={requestPermission}
+            title="Предоставьте разрешение"
+            textStyles="text-white text-xl"
+            containerStyles="max-w-[300px] mt-5"
+          />
         </View>
       </SafeAreaView>
     );
