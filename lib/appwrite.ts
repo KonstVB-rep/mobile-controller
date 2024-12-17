@@ -53,7 +53,7 @@ export const signOut = async () => {
 
 export const signIn = async (email: string, password: string) => {
   try {
-    
+
     const session = await account.createEmailPasswordSession(email, password);
 
     return session;
@@ -67,9 +67,6 @@ export const signIn = async (email: string, password: string) => {
       }
       if(error.code === 404){
         throw new Error("Пользователь с таким email не зарегистрирован.");
-      }
-      if(error.code === 409){
-        throw new Error("Пользователь с таким email уже существует.");
       }
       if(error.code === 500){
         throw new Error("Внутренняя ошибка сервера.");
