@@ -70,7 +70,7 @@ const QrCodeScanner = ({
 
   if (!permission) {
     return (
-      <SafeAreaView className="relative flex-1 bg-black-100">
+      <SafeAreaView className="relative flex-1 bg-primary">
         <Feather name="camera-off" size={120} color={Colors.white} />
         <Text className="text-white text-2xl font-pmedium">
           Запрашивает разрешение камеры

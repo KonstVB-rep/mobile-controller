@@ -1,5 +1,6 @@
 import CustomButton from "@/components/ui/CustomButton";
-import { useGlobalContext } from "@/context/useGlobalContext";
+import { useAuth } from "@/context/AuthContext";
+// import { useGlobalContext } from "@/context/useGlobalContext";
 import { signOut } from "@/lib/appwrite";
 import { Link, router } from "expo-router";
 import {
@@ -11,13 +12,13 @@ import {
 } from "react-native";
 
 const Tab = () => {
-  const { setIsLoggedIn, setUser } = useGlobalContext();
+  const { setUser, setIsAuthenticated } = useAuth();
 
   const logout = async () => {
     try {
       await signOut();
       setUser(null);
-      setIsLoggedIn(false);
+      setIsAuthenticated(false);
       router.replace("/login");
     } catch (error) {
       console.log(error);
@@ -31,8 +32,8 @@ const Tab = () => {
         resizeMode="contain"
         className="absolute top-0 left-0 right-0 bottom-0 opacity-50 w-full"
       />
-      <Text className="text-2xl font-psemibold text-white text-center">
-        Вы уверены,что хотите выйти?
+      <Text className="text-2xl font-psemibold leading-10 text-white text-center">
+        Вы уверены, что хотите выйти?
       </Text>
       <View className="flex-row gap-20 w-full pb-5 align-center justify-center">
         <Pressable className="flex w-[100px] align-center justify-center rounded-[30px] bg-confirm self-center">

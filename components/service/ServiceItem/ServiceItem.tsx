@@ -4,7 +4,6 @@ import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 
 const ServiceItem = ({ title, image }: { title: string; image: string }) => {
-  console.log(title, 'title');
   return (
     <>
       <View className="flex-cols gap-5 p-5 mx-2 mb-4 bg-black-200 rounded-xl w-full max-w-[500px]">

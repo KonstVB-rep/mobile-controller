@@ -7,12 +7,14 @@ import TabIcon from "@/components/tabs-layout/TabIcon/TabIcon";
 
 import { Colors } from "@/constants/styles-system";
 import { FontAwesome6, SimpleLineIcons } from "@expo/vector-icons";
-import { useGlobalContext } from "@/context/useGlobalContext";
+// import { useGlobalContext } from "@/context/useGlobalContext";
+import { useAuth } from "@/context/AuthContext";
 
 export default function TabLayout() {
-  const { isLoggedIn, user, isLoading } = useGlobalContext();
+  // const { isLoggedIn, user, isLoading } = useGlobalContext();
+  const {isLoading, isAuthenticated } = useAuth()
 
-  if (!isLoading && !isLoggedIn) return <Redirect href="/login" />;
+  if (!isLoading && !isAuthenticated) return <Redirect href="/login" />;
 
   // if (!accessToken) {
   //   return <Redirect href="/login" />;
@@ -61,7 +63,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="logout"
         options={{
-          title: "Выxoд",
+          title: "Выйти из приложения",
           tabBarIcon: ({ color, focused }) => (
             <TabIcon name="Выйти" color={color} focused={focused}>
               <SimpleLineIcons

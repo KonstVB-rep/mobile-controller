@@ -1,5 +1,5 @@
 import { useFonts } from "expo-font";
-import { Slot, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
@@ -7,8 +7,8 @@ import "react-native-reanimated";
 
 import "../global.css";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { Colors } from "@/constants/styles-system";
-import GlobalProvider from "@/context/GlobalProvider";
+import { Colors } from "@/constants/styles-system"; 
+import { AuthProvider } from "@/context/AuthContext";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -33,7 +33,7 @@ export default function RootLayout() {
   }
 
   return (
-    <GlobalProvider>
+    <AuthProvider>
       <SafeAreaProvider>
         <Stack
           screenOptions={{
@@ -49,6 +49,6 @@ export default function RootLayout() {
         </Stack>
         <StatusBar style="light" backgroundColor={Colors.primary} />
       </SafeAreaProvider>
-    </GlobalProvider>
+    </AuthProvider>
   );
 }

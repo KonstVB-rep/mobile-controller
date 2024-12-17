@@ -10,15 +10,15 @@ import React from "react";
 import { Link, Redirect, router } from "expo-router";
 import CustomButton from "@/components/ui/CustomButton";
 import FormField from "@/components/ui/FormField";
-import { getCurrentUser, signIn } from "@/lib/appwrite";
-import { useGlobalContext } from "@/context/useGlobalContext";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
-import { IUser } from "@/context/GlobalProvider";
+
 import { AppwriteException } from "react-native-appwrite";
+import { IUser, useAuth } from "@/context/AuthContext";
+import { getCurrentUser, signIn } from "@/lib/appwrite";
 
 const SignIn = () => {
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
-  const { isLoading, isLoggedIn, setUser, setIsLoggedIn } = useGlobalContext();
+
+  const { isLoading, isAuthenticated, setUser, setIsAuthenticated } = useAuth();
 
   const [form, setForm] = React.useState({
     email: "",
@@ -26,7 +26,6 @@ const SignIn = () => {
   });
 
   const isEmptyForm = form.email.trim() === "" || form.password.trim() === "";
-
   const submit = async () => {
     if (isEmptyForm) {
       return Alert.alert("Все поля обязательные.Пожалуйста,заполните их.");
@@ -37,11 +36,11 @@ const SignIn = () => {
     try {
       await signIn(form.email, form.password);
 
-      const result = await getCurrentUser();
-      setUser(result as IUser);
-      setIsLoggedIn(true);
+      const user = await getCurrentUser();
+      setUser(user as IUser);
+      setIsAuthenticated(true);
 
-      Alert.alert(`Добро пожаловать, ${result?.username}!`);
+      Alert.alert(`Добро пожаловать, ${user?.username}!`);
 
       router.replace("/(tabs)");
     } catch (error) {
@@ -53,7 +52,7 @@ const SignIn = () => {
     }
   };
 
-  if (!isLoading && isLoggedIn) {
+  if (!isLoading && isAuthenticated) {
     return <Redirect href="/(tabs)" />;
   }
 
