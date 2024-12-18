@@ -1,10 +1,8 @@
-import { Colors, FontSize } from "@/constants/styles-system";
 import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet,
   Alert,
   Platform,
 } from "react-native";

@@ -1,7 +1,6 @@
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable, View } from "react-native";
 import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Colors, Radius } from "@/constants/styles-system";
 import { useCameraPermissions } from "expo-camera";
 
 

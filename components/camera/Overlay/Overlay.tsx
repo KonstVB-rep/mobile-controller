@@ -1,6 +1,7 @@
-import { Colors, HEADER_HEIGHT } from '@/constants/styles-system';
 import { Canvas, DiffRect, rect, rrect } from '@shopify/react-native-skia';
 import { Dimensions, Platform, StyleSheet } from 'react-native';
+
+import { Colors, HEADER_HEIGHT } from '@/constants/styles-system';
 
 const { width, height } = Dimensions.get('window');
 const innerDimension = 300;

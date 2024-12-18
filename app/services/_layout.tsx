@@ -1,7 +1,7 @@
 import React from "react";
-import { Redirect, Slot, Stack } from "expo-router";
-import { Colors } from "@/constants/styles-system";
+import { Redirect, Stack } from "expo-router";
 
+import { Colors } from "@/constants/styles-system";
 import { useAuth } from "@/context/AuthContext";
 
 const ServicesLayout = () => {

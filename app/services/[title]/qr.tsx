@@ -1,6 +1,6 @@
 import React from "react";
-
 import { useLocalSearchParams } from "expo-router";
+
 import useFlashlight from "@/hooks/useFlashlight";
 import FlashlightField from "@/components/camera/FlashlightField/FlashlightField";
 import QrCodeScanner from "@/components/camera/QrCodeScanner/QrCodeScanner";

@@ -1,7 +1,3 @@
-import CustomButton from "@/components/ui/CustomButton";
-import { useAuth } from "@/context/AuthContext";
-// import { useGlobalContext } from "@/context/useGlobalContext";
-import { signOut } from "@/lib/appwrite";
 import { Link, router } from "expo-router";
 import {
   View,
@@ -10,6 +6,11 @@ import {
   ImageBackground,
   SafeAreaView,
 } from "react-native";
+
+import CustomButton from "@/components/ui/CustomButton";
+import { useAuth } from "@/context/AuthContext";
+import { signOut } from "@/lib/appwrite";
+
 
 const Tab = () => {
   const { setUser, setIsAuthenticated } = useAuth();

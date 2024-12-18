@@ -1,24 +1,17 @@
-import { Redirect, Tabs } from "expo-router";
 import React from "react";
-// import { Platform } from "react-native";
+import { Redirect, Tabs } from "expo-router";
+import { FontAwesome6, SimpleLineIcons } from "@expo/vector-icons";
 
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import TabIcon from "@/components/tabs-layout/TabIcon/TabIcon";
-
 import { Colors } from "@/constants/styles-system";
-import { FontAwesome6, SimpleLineIcons } from "@expo/vector-icons";
-// import { useGlobalContext } from "@/context/useGlobalContext";
 import { useAuth } from "@/context/AuthContext";
 
 export default function TabLayout() {
-  // const { isLoggedIn, user, isLoading } = useGlobalContext();
+
   const {isLoading, isAuthenticated } = useAuth()
 
   if (!isLoading && !isAuthenticated) return <Redirect href="/login" />;
-
-  // if (!accessToken) {
-  //   return <Redirect href="/login" />;
-  // }
 
   return (
     <Tabs

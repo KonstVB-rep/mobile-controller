@@ -2,20 +2,16 @@ import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
-  StyleSheet,
   Pressable,
   SafeAreaView,
   Platform,
 } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
-
-// import { Overlay } from "../Overlay/Overlay";
-
 import { useWindowDimensions } from "react-native";
+
 import SuccessNotification from "@/components/SuccessNotification";
 import { HEADER_HEIGHT, Colors } from "@/constants/styles-system";
-import Button from "@/components/ui/Button";
 import { Overlay } from "../Overlay/Overlay";
 import CustomButton from "@/components/ui/CustomButton";
 

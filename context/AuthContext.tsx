@@ -48,26 +48,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
     checkAuth();
 
-    const handleLogout = async (nextAppState : string) => {
-      try {
-        console.log(nextAppState === "background")
-        if (nextAppState === "background") {
-          await SecureStore.deleteItemAsync("jwtToken"); // Удаление JWT из хранилища
-          await account.deleteSession("current");
-          setUser(null); // Сброс состояния пользователя
-          setIsAuthenticated(false); // Обновление состояния авторизации
-          console.log("User logged out and data cleared.");
-        }
-      } catch (error) {
-        console.error("Error logging out:", error);
-      }
-    };
-
-    const subscription = AppState.addEventListener("change", handleLogout);
-
-    return () => {
-      subscription.remove(); // Очистка слушателя при размонтировании
-    };
+    return () => console.log(AppState);
   }, []);
 
   return (
