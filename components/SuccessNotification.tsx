@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
-import { Text, StyleSheet, Animated, TextStyle } from 'react-native';
-import { Colors, FontFamily, FontSize } from '../constants/styles-system';
-
+import { Text, Animated } from 'react-native';
 
 export interface SuccessNotificationProps {
 	successText: string | null;
@@ -11,7 +9,6 @@ const SuccessNotification = ({ successText }: SuccessNotificationProps) => {
 	const [isShown, setIsShown] = React.useState<boolean>(false);
 	const animatedValue = new Animated.Value(-65);
 
-	console.log(successText, '==========================successText==========================');
 
 	const onEnter = () => {
 		Animated.timing(animatedValue, {
@@ -50,33 +47,14 @@ const SuccessNotification = ({ successText }: SuccessNotificationProps) => {
 
 	return (
 		<Animated.View
-			style={{ ...style.success, transform: [{ translateY: animatedValue }] }}
+			style={{ transform: [{ translateY: animatedValue }] }}
+			className="absolute top-0 left-0 right-0 flex-row items-center justify-center p-4 h-[65] bg-success z-10"
 			onLayout={onEnter}
 		>
-			<Text style={style.successText}>{successText}</Text>
+			<Text className="text-white text-base font-pmedium text-center">{successText}</Text>
 		</Animated.View>
 	);
 };
 
 export default SuccessNotification;
 
-const style = StyleSheet.create({
-	success: {
-		position: 'absolute',
-		top: 0,
-		left: 0,
-		right: 0,
-		alignItems: 'center',
-		justifyContent: 'center',
-		padding: 15,
-		height: 65,
-		backgroundColor: Colors.success,
-		zIndex: 10,
-	},
-	successText: {
-		fontSize: FontSize.f16,
-		color: Colors.white,
-		textAlign: 'center',
-		fontFamily: FontFamily.Poppins,
-	} as TextStyle,
-});

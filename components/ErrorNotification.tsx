@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { Text, StyleSheet, Animated, TextStyle } from 'react-native';;
-import { Colors, FontFamily, FontSize } from '../constants/styles-system';
+import { Text, Animated } from 'react-native';;
 
 export interface ErrorNotificationProps {
 	error: string | null;
@@ -46,30 +45,13 @@ const ErrorNotification = ({ error }: ErrorNotificationProps) => {
 
 	return (
 		<Animated.View
-			style={{ ...style.error, transform: [{ translateY: animatedValue }] }}
+			className="absolute top-0 left-0 right-0 p-16 items-center bg-alert"
+			style={{transform: [{ translateY: animatedValue }] }}
 			onLayout={onEnter}
 		>
-			<Text style={style.errorText}>{error}</Text>
+			<Text className='font-pmedium text-white text-center font-base'>{error}</Text>
 		</Animated.View>
 	);
 };
 
 export default ErrorNotification;
-
-const style = StyleSheet.create({
-	error: {
-		position: 'absolute',
-		top: 0,
-		left: 0,
-		right: 0,
-		alignItems: 'center',
-		padding: 15,
-		backgroundColor: Colors.alert,
-	},
-	errorText: {
-		fontSize: FontSize.f16,
-		color: Colors.white,
-		textAlign: 'center',
-		fontFamily: FontFamily.Poppins,
-	} as TextStyle,
-});

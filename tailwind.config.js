@@ -34,6 +34,8 @@ module.exports = {
         },
         confirm: "#0057fa",
         unConfirm: "#FF0000",
+        alert: "#CC384E",
+        success: "#00C48C",
       },
       fontFamily: {
         pregular: ["Poppins-Regular", "sans-serif"],

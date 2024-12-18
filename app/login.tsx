@@ -7,23 +7,29 @@ import {
   Image,
 } from "react-native";
 import React from "react";
-import { Link, router } from "expo-router";
+import { Link, Redirect, router } from "expo-router";
+import { AppwriteException } from "react-native-appwrite";
+
 import CustomButton from "@/components/ui/CustomButton";
-import FormField from "@/components/ui/FormField";
-import { signIn } from "@/lib/appwrite";
+import FormField from "@/components/ui/FormField";;
+import { IUser, useAuth } from "@/context/AuthContext";
+import { getCurrentUser, signIn } from "@/lib/appwrite";
 
 const SignIn = () => {
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
+
+  const { isLoading, isAuthenticated, setUser, setIsAuthenticated } = useAuth();
+
   const [form, setForm] = React.useState({
     email: "",
     password: "",
   });
 
   const isEmptyForm = form.email.trim() === "" || form.password.trim() === "";
-
   const submit = async () => {
+
     if (isEmptyForm) {
-      Alert.alert("All fields are required.Please fill in all fields");
+      return Alert.alert("Все поля обязательные.Пожалуйста,заполните их.");
     }
 
     setIsSubmitting(true);
@@ -31,13 +37,31 @@ const SignIn = () => {
     try {
       await signIn(form.email, form.password);
 
-      router.replace("/");
+      const user = await getCurrentUser();
+
+      setUser(user as IUser);
+      setIsAuthenticated(true);
+
+      Alert.alert(`Добро пожаловать, ${user?.username}!`);
+
+      router.replace("/(tabs)");
+
     } catch (error) {
-      Alert.alert(error as string);
+
+      if (error instanceof Error || error instanceof AppwriteException) {
+
+        Alert.alert(error.message);
+
+      } else Alert.alert(error as string);
+
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  if (!isLoading && isAuthenticated) {
+    return <Redirect href="/(tabs)" />;
+  }
 
   return (
     <SafeAreaView className="bg-primary h-full grow">
@@ -55,6 +79,7 @@ const SignIn = () => {
               resizeMode="contain"
               className="w-32 h-32"
             />
+
             <Text className=" text-2xl text-center text-white mt-5 font-psemibold">
               Мобильный котроллер
             </Text>
@@ -76,12 +101,16 @@ const SignIn = () => {
           />
 
           <CustomButton
-            title={"Войти"}
+            title="Войти"
             onPress={submit}
             isLoading={isSubmitting}
-            containerStyles="mt-5"
+            containerStyles="mt-5 rounded-xl"
             textStyles="text-xl text-white font-psemibold"
           />
+            
+          <Link href="/(tabs)" className="text-white text-xl font-psemibold">
+            Tabs
+          </Link>
         </View>
       </ScrollView>
     </SafeAreaView>

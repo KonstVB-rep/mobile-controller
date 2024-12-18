@@ -1,16 +1,16 @@
+import { useEffect } from "react";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
 import "react-native-reanimated";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+
+import { Colors } from "@/constants/styles-system"; 
+import { AuthProvider } from "@/context/AuthContext";
 
 import "../global.css";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { Colors } from "@/constants/styles-system";
-import GlobalProvider from "@/context/GlobalProvider";
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -33,13 +33,10 @@ export default function RootLayout() {
   }
 
   return (
-    <GlobalProvider>
+    <AuthProvider>
       <SafeAreaProvider>
         <Stack
           screenOptions={{
-            // contentStyle: {
-            //   backgroundColor: Colors.black100,
-            // },
             headerShown: false,
           }}
         >
@@ -49,6 +46,6 @@ export default function RootLayout() {
         </Stack>
         <StatusBar style="light" backgroundColor={Colors.primary} />
       </SafeAreaProvider>
-    </GlobalProvider>
+    </AuthProvider>
   );
 }

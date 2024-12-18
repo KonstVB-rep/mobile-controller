@@ -7,10 +7,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 import React from "react";
-import {
-
-  Colors,
-} from "@/constants/styles-system";
 
 const Button = ({
   text,
@@ -21,7 +17,7 @@ const Button = ({
 
   const color = animatedValue.interpolate({
     inputRange: [0, 100],
-    outputRange: [Colors.btnHoverColor, Colors.btnColor],
+    outputRange: ["#044d65", '#07a1e9'],
   });
 
   const fadeIn = (event: GestureResponderEvent) => {
@@ -46,10 +42,6 @@ const Button = ({
     <Pressable {...props} onPressIn={fadeIn} onPressOut={fadeOut}>
       <Animated.View
       className={`items-center justify-center rounded-lg h-12 px-5 bg-[${color}]`}
-        // style={{
-        //   ...style.button,
-        //   backgroundColor: color,
-        // }}
       >
         {!isLoading ? (
           <Text className="text-white font-pmedium text-lg ">{text}</Text>

@@ -1,6 +1,5 @@
-import { FontFamily, Gaps } from "@/constants/styles-system";
-import { View, Text, StyleSheet } from "react-native";
-
+import { View, Text } from "react-native";
+        
 const TabIcon = ({
   children,
   name,
@@ -11,15 +10,21 @@ const TabIcon = ({
   name: string;
   color: string;
   focused: boolean;
-}) => (
-  <View className="relative t-5 w-20 gap-2 align-center justify-center">
-    {children}
-    <Text
-    className={`text-center text-[${color}] text-base ${focused ? "text-psemibold" : "text-pmedium"}`}
-    >
-      {name}
-    </Text>
-  </View>
-);
+}) => {
+
+  return (
+    <View className="relative pt-12 h-20 w-20 gap-2 align-center justify-center">
+      {children}
+      <Text
+        className={`text-center text-base ${
+          focused ? "text-psemibold" : "text-pmedium"
+        }`}
+        style={{ color }}
+      >
+        {name}
+      </Text>
+    </View>
+  );
+};
 
 export default TabIcon;
