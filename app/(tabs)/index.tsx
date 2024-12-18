@@ -12,6 +12,7 @@ const DATA = [
       "https://cdn1.ozonusercontent.com/s3/club-storage/images/article_preview/757/c1200/04ff4117-a77a-4577-8324-9d5c77915b69.jpeg",
   },
 ];
+
 const ServicesList = () => {
   return (
     <SafeAreaView className="flex-1 my-5">

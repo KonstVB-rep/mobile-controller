@@ -68,6 +68,7 @@ const QrCodeScanner = ({
     return (
       <SafeAreaView className="relative flex-1 bg-primary">
         <Feather name="camera-off" size={120} color={Colors.white} />
+        
         <Text className="text-white text-2xl font-pmedium">
           Запрашивает разрешение камеры
         </Text>
@@ -79,9 +80,11 @@ const QrCodeScanner = ({
       <SafeAreaView className="relative flex-1 bg-black-100">
         <View className="flex-1 gap-5 flex-cols items-center justify-center">
           <Feather name="camera-off" size={120} color={Colors.white} />
+          
           <Text className="text-white text-2xl font-pmedium">
             Нет доступа к камере
           </Text>
+          
           <CustomButton
             onPress={requestPermission}
             title="Предоставьте разрешение"
@@ -98,6 +101,7 @@ const QrCodeScanner = ({
       <SuccessNotification
         successText={scanned ? "QR-код успешно сканирован" : null}
       />
+      
       <CameraView
         animateShutter={true}
         facing="back"
@@ -108,9 +112,11 @@ const QrCodeScanner = ({
         enableTorch={isOnFlashlight}
         className="absolute inset-0 -z-1"
       />
+      
       {Platform.OS === "ios" || Platform.OS === "android" ? (
         <Overlay keyValue={!showBtnScan ? "inner" : "innerCircle"} />
       ) : null}
+      
       {showBtnScan && (
         <Pressable
           onPress={handlePressScan}
@@ -134,3 +140,4 @@ const QrCodeScanner = ({
 };
 
 export default QrCodeScanner;
+

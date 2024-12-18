@@ -79,7 +79,7 @@ const SignIn = () => {
               resizeMode="contain"
               className="w-32 h-32"
             />
-            
+
             <Text className=" text-2xl text-center text-white mt-5 font-psemibold">
               Мобильный котроллер
             </Text>
@@ -107,6 +107,7 @@ const SignIn = () => {
             containerStyles="mt-5 rounded-xl"
             textStyles="text-xl text-white font-psemibold"
           />
+            
           <Link href="/(tabs)" className="text-white text-xl font-psemibold">
             Tabs
           </Link>

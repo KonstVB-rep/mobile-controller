@@ -49,6 +49,7 @@ export default function TabLayout() {
                 color={color}
                 className="w-full text-center"
               />
+
             </TabIcon>
           ),
         }}

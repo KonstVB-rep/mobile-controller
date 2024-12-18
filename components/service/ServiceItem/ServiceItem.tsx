@@ -10,6 +10,7 @@ const ServiceItem = ({ title, image }: { title: string; image: string }) => {
         <Text className="text-white text-2xl font-psemibold text-center">
           {title}
         </Text>
+        
         <Image
           source={{
             uri: `${image}`,
@@ -28,6 +29,7 @@ const ServiceItem = ({ title, image }: { title: string; image: string }) => {
                 } h-full flex flex-cols p-2 justify-center items-center gap-2 border-2 border-black-200 rounded-xl`}
               >
                 <MaterialIcons name="qr-code-scanner" size={24} color="white" />
+                
                 <Text className="text-white text-lg">Qr</Text>
               </View>
             )}
@@ -48,6 +50,7 @@ const ServiceItem = ({ title, image }: { title: string; image: string }) => {
                   size={24}
                   color="white"
                 />
+                
                 <Text className="text-white text-lg">NFC</Text>
               </View>
             )}

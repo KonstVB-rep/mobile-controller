@@ -13,6 +13,7 @@ export default function NotFoundScreen() {
         <Text>Данной страницы не существует!</Text>
         <Link href="/" className="mt-4 py-4">
           <Text>Вернуться на главную!</Text>
+
         </Link>
       </View>
     </>
