@@ -2,22 +2,36 @@
   "expo": {
     "name": "mobile-controller",
     "slug": "mobile-controller",
+    "description": "Приложения для контроля прохода путем сканирования qr кодов и считывания NFC тегов",
     "version": "1.0.0",
+    "platforms": ["ios", "android"],
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "mobile-controller-app",
+    "scheme": "mobile-controller",
     "userInterfaceStyle": "automatic",
+    "backgroundColor": "#161622",
+    "primaryColor": "#161622",
     "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#161622"
+    },
     "ios": {
-      "supportsTablet": true,
-      "package:": "com.ertel.MobileControllerApp"
+      "supportsTablet": false
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#232533"
+        "backgroundColor": "#161622"
       },
-      "package:": "com.ertel.MobileControllerApp"
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.NFC", // Доступ к NFC
+        "android.permission.NFC_TRANSACTION_EVENT"
+      ],
+      "package": "com.ertel.MobileController"
     },
     "web": {
       "bundler": "metro",
@@ -39,10 +53,9 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
+          "image": "./assets/images/icon.png",
           "resizeMode": "contain",
-          "backgroundColor": "#232533"
+          "backgroundColor": "#161622"
         }
       ],
       [
@@ -57,6 +70,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "2847d3b2-c54c-4064-a3a7-1715e4ec1253"
+      }
+    },
+    "owner": "konst_vb"
   }
 }

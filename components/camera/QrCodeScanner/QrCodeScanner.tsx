@@ -5,15 +5,15 @@ import {
   Pressable,
   SafeAreaView,
   Platform,
+  Alert,
 } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
-import { useWindowDimensions } from "react-native";
 
 import SuccessNotification from "@/components/SuccessNotification";
-import { HEADER_HEIGHT, Colors } from "@/constants/styles-system";
-import { Overlay } from "../Overlay/Overlay";
+import { Colors } from "@/constants/styles-system";
 import CustomButton from "@/components/ui/CustomButton";
+import { Overlay } from "../Overlay/Overlay";
 
 const QrCodeScanner = ({
   isOnFlashlight,
@@ -25,8 +25,6 @@ const QrCodeScanner = ({
   const [scanned, setScanned] = useState<boolean>(false);
   const [showBtnScan, setShowBtnScan] = useState<boolean>(false);
   const [permission, requestPermission] = useCameraPermissions();
-
-  const windowHeight = useWindowDimensions().height;
 
   // const handlePress = async (uri: string) => {
   // 	const url = uri; // Замените на ваш URL
@@ -68,28 +66,29 @@ const QrCodeScanner = ({
     return (
       <SafeAreaView className="relative flex-1 bg-primary">
         <Feather name="camera-off" size={120} color={Colors.white} />
-        
+
         <Text className="text-white text-2xl font-pmedium">
           Запрашивает разрешение камеры
         </Text>
       </SafeAreaView>
     );
   }
+
   if (!permission.granted) {
     return (
       <SafeAreaView className="relative flex-1 bg-black-100">
         <View className="flex-1 gap-5 flex-cols items-center justify-center">
           <Feather name="camera-off" size={120} color={Colors.white} />
-          
+
           <Text className="text-white text-2xl font-pmedium">
             Нет доступа к камере
           </Text>
-          
+
           <CustomButton
             onPress={requestPermission}
             title="Предоставьте разрешение"
             textStyles="text-white text-xl"
-            containerStyles="max-w-[300px] mt-5"
+            containerStyles="max-w-[300px] mt-5 rounded-lg"
           />
         </View>
       </SafeAreaView>
@@ -97,11 +96,11 @@ const QrCodeScanner = ({
   }
 
   return (
-    <>
+    <View className="relative flex-1 bg-black-100">
       <SuccessNotification
         successText={scanned ? "QR-код успешно сканирован" : null}
       />
-      
+
       <CameraView
         animateShutter={true}
         facing="back"
@@ -110,34 +109,34 @@ const QrCodeScanner = ({
           barcodeTypes: ["qr", "pdf417"],
         }}
         enableTorch={isOnFlashlight}
-        className="absolute inset-0 -z-1"
+        autofocus={"on"}
+        style={{
+          flex: 1,
+        }}
+        className="absolute top-0 left-0 right-0 bottom-0 -z-[10]"
       />
-      
+
       {Platform.OS === "ios" || Platform.OS === "android" ? (
-        <Overlay keyValue={!showBtnScan ? "inner" : "innerCircle"} />
+        <Overlay keyValue={showBtnScan ? "fill" : "inner"} />
       ) : null}
-      
+
       {showBtnScan && (
         <Pressable
           onPress={handlePressScan}
-          style={({ pressed }) => ({
-            width: pressed ? 140 : 120,
-            height: pressed ? 140 : 120,
-          })}
-          className={`absolute h-[120px] w-[120px] bg-black-100 rounded-fill top-[${
-            windowHeight / 2 - HEADER_HEIGHT
-          }px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 gap-5 flex-cols align-center justify-center`}
+          className="absolute active:opacity-75 h-[120px] w-[120px] bg-black-100 rounded-full bottom-0 left-1/2 opacity-transform -translate-x-1/2 translate-y-1/2 flex items-center justify-center border-2 ring-offset-4 border-solid border-secondary z-[11]"
         >
           <MaterialIcons
             name="qr-code-scanner"
             size={48}
-            color={Colors.secondary}
+            color={Colors.white}
           />
+          <Text className="text-white text-base block text-center">
+            Сканировать
+          </Text>
         </Pressable>
       )}
-    </>
+    </View>
   );
 };
 
 export default QrCodeScanner;
-

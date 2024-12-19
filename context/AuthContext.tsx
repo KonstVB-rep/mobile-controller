@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import * as SecureStore from "expo-secure-store";
-import { account, getCurrentUser } from "@/lib/appwrite";
-import { AppState } from "react-native";
+import { client, getCurrentUser } from "@/lib/appwrite";
 
 export interface IUser {
   username: string;
@@ -26,21 +25,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  console.log(AppState);
-
   // Проверка состояния пользователя при загрузке приложения
   useEffect(() => {
     const checkAuth = async () => {
       setIsLoading(true);
       try {
+        // Получение JWT из SecureStore
         const jwt = await SecureStore.getItemAsync("jwtToken");
         if (jwt) {
+          // Установка JWT в клиент Appwrite
+          client.setJWT(jwt);
+
+          // Получение текущего пользователя
           const currentUser = await getCurrentUser();
           setUser(currentUser);
           setIsAuthenticated(true);
+        } else {
+          setUser(null);
+          setIsAuthenticated(false);
         }
       } catch (error) {
-        console.error("Failed to fetch user:", error);
+        console.error("Не удалось найти пользователя:", error);
+        setUser(null);
+        setIsAuthenticated(false);
       } finally {
         setIsLoading(false);
       }
@@ -48,7 +55,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
     checkAuth();
 
-    return () => console.log(AppState);
   }, []);
 
   return (

@@ -16,8 +16,7 @@ const DATA = [
 const ServicesList = () => {
   return (
     <SafeAreaView className="flex-1 my-5">
-      <ScrollView className="flex-1 px-5">
-        <Link href="/login" className="flex flex-row items-center gap-2 mb-5">Login</Link>
+      <ScrollView className="flex-1 px-4">
         {DATA.map((item) => (
           <ServiceItem key={item?.title} {...item} />
         ))}

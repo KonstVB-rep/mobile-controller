@@ -1,116 +1,87 @@
 import {
-  Client,
-  Account,
-  Databases,
-  Query,
-} from "react-native-appwrite";
-import {
-  REACT_APP_ENDPOINT,
-  REACT_APP_PLATFORM,
-  REACT_APP_PROJECT_ID,
-  REACT_APP_DATABASE_ID,
-  REACT_APP_USER_COLLECTION_ID,
-} from "@env";
+    Client,
+    Account,
+    Databases,
+  } from "react-native-appwrite";
+  
+  import * as SecureStore from "expo-secure-store";
+import { IUser } from "@/context/AuthContext";
+  
+  
+  export const appWriteConfig = {
+    endpoint: process.env.EXPO_PUBLIC_ENDPOINT!,
+    platform: process.env.EXPO_PUBLIC_PLATFORM!,
+    projectId: process.env.EXPO_PUBLIC_PROJECT_ID!,
+    databaseId: process.env.EXPO_PUBLIC_DATABASE_ID!,
+    userCollectionId: process.env.EXPO_PUBLIC_USER_COLLECTION_ID!,
+  };
+  
+  // Init your React Native SDK
+  export const client = new Client();
+  export const database = new Databases(client);
+  export const account = new Account(client);
+  
+  client
+    .setEndpoint(appWriteConfig.endpoint) // Your Appwrite Endpoint
+    .setProject(appWriteConfig.projectId)
+    .setPlatform(appWriteConfig.platform);
 
-export const appWriteConfig = {
-  endpoint: REACT_APP_ENDPOINT,
-  platform: REACT_APP_PLATFORM,
-  projectId: REACT_APP_PROJECT_ID,
-  databaseId: REACT_APP_DATABASE_ID,
-  userCollectionId: REACT_APP_USER_COLLECTION_ID,
+export const setClientJwt = async (jwt: string) => {
+  client.setJWT(jwt); //  метод  у Client
 };
 
-// Init your React Native SDK
-const client = new Client();
-const database = new Databases(client);
+export const getCurrentUser = async (): Promise<IUser> => {
+    const response = await account.get(); // Получение текущего пользователя из Appwrite
+    return {
+      username: response.name,
+      email: response.email,
+      accountId: response.$id,
+    };
+  };
 
-client
-  .setEndpoint(appWriteConfig.endpoint) // Your Appwrite Endpoint
-  .setProject(appWriteConfig.projectId)
-  .setPlatform(appWriteConfig.platform);
-
-const account = new Account(client);
-
-// export const setClientJwt = async (jwt: string) => {
-//   client.setJWT(jwt); //  метод  у Client
-// };
-
-export const signOut = async () => {
-  try {
-    await account.deleteSession("current");
-    // await SecureStoreJwt.deleteToken();
-  } catch (error) {
-    console.log(error, "error");
-  }
-};
-
-export const signIn = async (email: string, password: string) => {
-  try {
-    await signOut();
-
-    const session = await account.createEmailPasswordSession(email, password);
-
-    // const { jwt } = await account.createJWT();
-
-    // await SecureStoreJwt.saveToken(jwt);
-
-    // await setClientJwt(jwt);
-
-    return session;
-  } catch (error) {
-    console.log(error, "error");
-    throw new Error(error as string);
-  }
-};
-
-export const getCurrentUser = async () => {
-  try {
-    const currentAccount = await account.get();
-
-    if (!currentAccount) {
-      throw new Error("Failed to get current account");
+  export const signIn = async (email: string, password: string) => {
+    try {
+      // Создание сессии пользователя
+      const session = await account.createEmailPasswordSession(email, password);
+  
+      // Создание JWT для авторизации запросов
+      const { jwt } = await account.createJWT();
+  
+      // Сохранение JWT в SecureStore
+      await SecureStore.setItemAsync("jwtToken", jwt);
+  
+      // Установка JWT в клиенте Appwrite
+      client.setJWT(jwt);
+  
+      // Получение текущего пользователя
+      const currentUser = await getCurrentUser();
+  
+      return currentUser;
+    } catch (error) {
+      console.error("Не удалось выполнить вход в систему:", error);
+  
+      // Генерация пользовательского сообщения об ошибке
+      throw new Error("Не удается войти в систему. Пожалуйста, проверьте свои учетные данные и повторите попытку.");
     }
+  };
 
-    const currentUser = await database.listDocuments(
-      appWriteConfig.databaseId,
-      appWriteConfig.userCollectionId,
-      [Query.equal("accountId", currentAccount.$id)]
-    );
-
-    if (!currentUser) {
-      throw new Error("Failed to get current user");
+  export const signOut = async () => {
+    try {
+      // Удаление сессии пользователя
+      await account.deleteSession("current");
+  
+      // Удаление JWT из SecureStore
+      await SecureStore.deleteItemAsync("jwtToken");
+  
+      // Очистка JWT на стороне клиента
+      client.setJWT("");
+  
+      console.log("Пользователь успешно вышел из системы.");
+    } catch (error) {
+      console.error("Не удалось выйти из системы:", error);
+  
+      // Можно уведомить об ошибке
+      throw new Error("Не удается выйти из системы. Пожалуйста, попробуйте снова.");
     }
+  };
 
-    console.log(currentUser, "currentUser");
-    return currentUser.documents[0];
-  } catch (error) {
-    console.log(error, "error");
-  }
-};
-
-// export const initializeAndGetUser = async () => {
-//   try {
-//     // Загружаем JWT из хранилища
-//     const jwt = await SecureStoreJwt.getToken();
-//     if (!jwt) {
-//       console.log("JWT не найден. Пользователь не авторизован.");
-//       return null; // JWT отсутствует
-//     }
-
-//     // Устанавливаем JWT в клиент
-//     await setClientJwt(jwt);
-
-//     // Получаем текущего пользователя
-//     return await getCurrentUser();
-//   } catch (error) {
-//     if (error instanceof AppwriteException) {
-//       if (error.code === 401) {
-//         console.log("JWT недействителен. Пользователь не авторизован.");
-//       } else {
-//         console.error(`Ошибка Appwrite: ${error.message}`);
-//       }
-//     } else {
-//       console.error("Неизвестная ошибка:", error);
-//     }
-//   }
-// };

@@ -6,7 +6,7 @@ import { router } from "expo-router";
 const ServiceItem = ({ title, image }: { title: string; image: string }) => {
   return (
     <>
-      <View className="flex-cols gap-5 p-5 mx-2 mb-4 bg-black-200 rounded-xl w-full max-w-[500px]">
+      <View className="flex-cols gap-1 pt-4 mb-4 bg-black-200 rounded-xl max-w-[500px]">
         <Text className="text-white text-2xl font-psemibold text-center">
           {title}
         </Text>
@@ -15,9 +15,9 @@ const ServiceItem = ({ title, image }: { title: string; image: string }) => {
           source={{
             uri: `${image}`,
           }}
-          className="w-full h-[200px] m-auto ratio-video rounded-xl"
+          className="w-full h-[200px] ratio-video"
         />
-        <View className="flex flex-row justify-between gap-4">
+        <View className="flex flex-row p-2 justify-between gap-1">
           <Pressable
             onPress={() => router.push(`/services/${title}/qr`)}
             className="grow h-24 border-1 border-black-200 rounded-xl"
