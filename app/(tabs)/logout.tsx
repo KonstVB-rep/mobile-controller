@@ -1,4 +1,3 @@
-
 import { Link, router } from "expo-router";
 import {
   View,
@@ -6,12 +5,13 @@ import {
   Pressable,
   ImageBackground,
   SafeAreaView,
+  Alert,
 } from "react-native";
 
 import CustomButton from "@/components/ui/CustomButton";
 import { useAuth } from "@/context/AuthContext";
 import { signOut } from "@/lib/appwrite";
-
+import { AppwriteException } from "react-native-appwrite";
 
 const Tab = () => {
   const { setUser, setIsAuthenticated } = useAuth();
@@ -21,9 +21,12 @@ const Tab = () => {
       await signOut();
       setUser(null);
       setIsAuthenticated(false);
-      router.replace("/login");
+      router.replace("/");
     } catch (error) {
       console.log(error);
+      if (error instanceof Error || error instanceof AppwriteException) {
+        Alert.alert(error.message);
+      } else Alert.alert(error as string);
     }
   };
 

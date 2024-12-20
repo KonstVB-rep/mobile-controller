@@ -19,7 +19,7 @@ const ServiceItem = ({ title, image }: { title: string; image: string }) => {
         />
         <View className="flex flex-row p-2 justify-between gap-1">
           <Pressable
-            onPress={() => router.push(`/services/${title}/qr`)}
+            onPress={() => router.push(`/scanner/${title}/qr`)}
             className="grow h-24 border-1 border-black-200 rounded-xl"
           >
             {({ pressed }) => (
@@ -36,7 +36,7 @@ const ServiceItem = ({ title, image }: { title: string; image: string }) => {
           </Pressable>
 
           <Pressable
-            onPress={() => router.push(`/services/${title}/nfc`)}
+            onPress={() => router.push(`/scanner/${title}/nfc`)}
             className="grow h-24 border-1 border-black-200 rounded-xl"
           >
             {({ pressed }) => (

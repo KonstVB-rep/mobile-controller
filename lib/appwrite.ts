@@ -40,18 +40,22 @@ export const getCurrentUser = async (): Promise<IUser> => {
   };
 
   export const signIn = async (email: string, password: string) => {
+   
     try {
       // Создание сессии пользователя
-      const session = await account.createEmailPasswordSession(email, password);
+      await account.createEmailPasswordSession(email, password);
+
+      const jwt = await account.createJWT();
+      console.log('jwt', jwt);
   
       // Создание JWT для авторизации запросов
-      const { jwt } = await account.createJWT();
+      // const { jwt } = await account.createJWT();
   
       // Сохранение JWT в SecureStore
-      await SecureStore.setItemAsync("jwtToken", jwt);
+      // await SecureStore.setItemAsync("jwtToken", jwt);
   
       // Установка JWT в клиенте Appwrite
-      client.setJWT(jwt);
+      // client.setJWT(jwt);
   
       // Получение текущего пользователя
       const currentUser = await getCurrentUser();
@@ -74,7 +78,7 @@ export const getCurrentUser = async (): Promise<IUser> => {
       await SecureStore.deleteItemAsync("jwtToken");
   
       // Очистка JWT на стороне клиента
-      client.setJWT("");
+      // client.setJWT("");
   
       console.log("Пользователь успешно вышел из системы.");
     } catch (error) {

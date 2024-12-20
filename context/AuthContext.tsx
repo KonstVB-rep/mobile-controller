@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import * as SecureStore from "expo-secure-store";
-import { client, getCurrentUser } from "@/lib/appwrite";
+import { getCurrentUser } from "@/lib/appwrite";
+
 
 export interface IUser {
   username: string;
@@ -27,23 +28,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Проверка состояния пользователя при загрузке приложения
   useEffect(() => {
+    
     const checkAuth = async () => {
       setIsLoading(true);
       try {
         // Получение JWT из SecureStore
-        const jwt = await SecureStore.getItemAsync("jwtToken");
-        if (jwt) {
-          // Установка JWT в клиент Appwrite
-          client.setJWT(jwt);
+        // const jwt = await SecureStore.getItemAsync("jwtToken");
+        // if (jwt) {
+        //   // Установка JWT в клиент Appwrite
+        //   client.setJWT(jwt);
 
           // Получение текущего пользователя
           const currentUser = await getCurrentUser();
           setUser(currentUser);
           setIsAuthenticated(true);
-        } else {
-          setUser(null);
-          setIsAuthenticated(false);
-        }
+
       } catch (error) {
         console.error("Не удалось найти пользователя:", error);
         setUser(null);
@@ -68,6 +67,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
+  console.log(context, "context");
   if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
   }

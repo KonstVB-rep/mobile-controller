@@ -78,7 +78,7 @@ const QrCodeScanner = ({
     return (
       <SafeAreaView className="relative flex-1 bg-black-100">
         <View className="flex-1 gap-5 flex-cols items-center justify-center">
-          <Feather name="camera-off" size={120} color={Colors.white} />
+          <Feather name="camera-off" size={120} color="white" />
 
           <Text className="text-white text-2xl font-pmedium">
             Нет доступа к камере

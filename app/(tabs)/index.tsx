@@ -1,6 +1,5 @@
 import React from "react";
 import { SafeAreaView, ScrollView } from "react-native";
-import { Link } from "expo-router";
 
 import ServiceItem from "@/components/service/ServiceItem/ServiceItem";
 

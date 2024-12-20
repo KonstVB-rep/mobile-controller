@@ -11,7 +11,7 @@ import { Link, Redirect, router } from "expo-router";
 import { AppwriteException } from "react-native-appwrite";
 
 import CustomButton from "@/components/ui/CustomButton";
-import FormField from "@/components/ui/FormField";;
+import FormField from "@/components/ui/FormField";
 import { IUser, useAuth } from "@/context/AuthContext";
 import { getCurrentUser, signIn } from "@/lib/appwrite";
 
@@ -24,10 +24,9 @@ const SignIn = () => {
     email: "",
     password: "",
   });
-
+  console.log(isLoading, isAuthenticated, '--------------------------------------------------------')
   const isEmptyForm = form.email.trim() === "" || form.password.trim() === "";
   const submit = async () => {
-
     if (isEmptyForm) {
       return Alert.alert("Все поля обязательные.Пожалуйста,заполните их.");
     }
@@ -45,19 +44,15 @@ const SignIn = () => {
       Alert.alert(`Добро пожаловать, ${user?.username}!`);
 
       router.replace("/(tabs)");
-
     } catch (error) {
-
       if (error instanceof Error || error instanceof AppwriteException) {
-
         Alert.alert(error.message);
-
       } else Alert.alert(error as string);
-
     } finally {
       setIsSubmitting(false);
     }
   };
+
 
   if (!isLoading && isAuthenticated) {
     return <Redirect href="/(tabs)" />;
@@ -107,10 +102,6 @@ const SignIn = () => {
             containerStyles="mt-5 rounded-xl"
             textStyles="text-xl text-white font-psemibold"
           />
-            
-          <Link href="/(tabs)" className="text-white text-xl font-psemibold">
-            Tabs
-          </Link>
         </View>
       </ScrollView>
     </SafeAreaView>

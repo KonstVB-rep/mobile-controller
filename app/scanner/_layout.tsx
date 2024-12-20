@@ -8,14 +8,14 @@ const ServicesLayout = () => {
   
     const {isLoading, isAuthenticated } = useAuth()
   
-    // if (!isLoading && !isAuthenticated) return <Redirect href="/login" />;
+    if (!isLoading && !isAuthenticated) return <Redirect href="/" />;
 
   return (
     <Stack
       screenOptions={{
         headerShown: false,
         contentStyle: {
-          backgroundColor: Colors.blackAlpha80,
+          backgroundColor: Colors.primary,
         },
         headerStyle: {
           backgroundColor: Colors.black100,
