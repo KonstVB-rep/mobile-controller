@@ -5,15 +5,14 @@ import { Colors } from "@/constants/styles-system";
 import { useAuth } from "@/context/AuthContext";
 
 const ServicesLayout = () => {
-  
-    const {isLoading, isAuthenticated } = useAuth()
-  
-    if (!isLoading && !isAuthenticated) return <Redirect href="/" />;
+  const { isLoading, isAuthenticated } = useAuth();
+
+  if (!isLoading && !isAuthenticated) return <Redirect href="/" />;
 
   return (
     <Stack
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
         contentStyle: {
           backgroundColor: Colors.primary,
         },
@@ -35,9 +34,7 @@ const ServicesLayout = () => {
       <Stack.Screen
         name="[title]/nfc"
         options={({ route }) => ({
-          headerTitle: `${
-            (route.params as { title: string })?.title as string
-          }/NFC`,
+          title: `${(route.params as { title: string })?.title as string}/NFC`,
           headerShown: true,
         })}
       />

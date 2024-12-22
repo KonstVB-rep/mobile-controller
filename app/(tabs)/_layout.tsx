@@ -8,8 +8,7 @@ import { Colors } from "@/constants/styles-system";
 import { useAuth } from "@/context/AuthContext";
 
 export default function TabLayout() {
-
-  const {isLoading, isAuthenticated } = useAuth()
+  const { isLoading, isAuthenticated } = useAuth();
 
   if (!isLoading && !isAuthenticated) return <Redirect href="/" />;
 
@@ -33,12 +32,15 @@ export default function TabLayout() {
           borderTopWidth: 0,
           borderTopColor: Colors.primary,
           height: 80,
+          marginBottom: 10,
+          marginHorizontal: 5,
+          borderRadius: 100,
         },
         tabBarActiveBackgroundColor: Colors.secondary,
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="services"
         options={{
           title: "Услуги",
           tabBarIcon: ({ color, focused }) => (
@@ -49,7 +51,6 @@ export default function TabLayout() {
                 color={color}
                 className="w-full text-center"
               />
-
             </TabIcon>
           ),
         }}
@@ -64,7 +65,7 @@ export default function TabLayout() {
                 name="logout"
                 size={24}
                 color={color}
-                className="w-full text-center"
+                className="w-full text-center mt-1"
               />
             </TabIcon>
           ),

@@ -1,3 +1,5 @@
+import { MaterialIcons } from "@expo/vector-icons";
+import { Link } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -5,6 +7,7 @@ import {
   TouchableOpacity,
   Alert,
   Platform,
+  Pressable,
 } from "react-native";
 import NfcManager, { NfcEvents } from "react-native-nfc-manager";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -48,8 +51,8 @@ const NFCReader = () => {
   if (hasNfc === null) {
     return (
       <View className={styleWrapper}>
-        <Text className={styleText}>Your device</Text>
-        <Text className={styleText}>does not support NFC</Text>
+        <Text className={styleText}>Ваше устройство</Text>
+        <Text className={styleText}>не поддерживает NFC</Text>
       </View>
     );
   }
@@ -57,7 +60,7 @@ const NFCReader = () => {
   if (!hasNfc || Platform.OS === "web") {
     return (
       <View className={styleWrapper}>
-        <Text className={styleText}>NFC not supported</Text>
+        <Text className={styleText}>NFC не поддерживается</Text>
       </View>
     );
   }
@@ -65,11 +68,28 @@ const NFCReader = () => {
   return (
     <SafeAreaView className={styleWrapper}>
       <TouchableOpacity onPress={readTag}>
-        <Text className={styleText}>Scan a Tag</Text>
+        <Text className={styleText}>Сканировать тег</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={readTag}>
-        <Text className={styleText}>Cancel Scan a Tag</Text>
+        <Text className={styleText}>Отменить сканирование</Text>
       </TouchableOpacity>
+      {/* <View className="h-24 relative py-2 items-center justify-center p-3 bg-black-200">
+        <Link
+          href="/scanner/[title]/qr"
+          className="m-auto"
+          replace
+          asChild
+        >
+          <Pressable>
+            <MaterialIcons
+              name="qr-code-scanner"
+              size={48}
+              color="white"
+              className="p-2 text-white bg-black-100 rounded-full border-2 border-solid border-secondary-200 flex items-center align-content-center justify-center p-5"
+            />
+          </Pressable>
+        </Link>
+      </View> */}
     </SafeAreaView>
   );
 };

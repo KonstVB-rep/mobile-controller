@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import * as SecureStore from "expo-secure-store";
-import { getCurrentUser } from "@/lib/appwrite";
-
+import { client, getCurrentUser } from "@/lib/appwrite";
+import Toast from "react-native-toast-message";
 
 export interface IUser {
   username: string;
@@ -28,32 +28,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Проверка состояния пользователя при загрузке приложения
   useEffect(() => {
-    
     const checkAuth = async () => {
       setIsLoading(true);
       try {
         // Получение JWT из SecureStore
-        // const jwt = await SecureStore.getItemAsync("jwtToken");
-        // if (jwt) {
-        //   // Установка JWT в клиент Appwrite
-        //   client.setJWT(jwt);
-
-          // Получение текущего пользователя
+        const jwt = await SecureStore.getItemAsync("jwtToken");
+        if (jwt) {
+          client.setJWT(jwt);
+          
           const currentUser = await getCurrentUser();
+
           setUser(currentUser);
           setIsAuthenticated(true);
-
+        }
       } catch (error) {
-        console.error("Не удалось найти пользователя:", error);
+        console.error("Время сессии истекло.Войдите в систему заново.", error);
         setUser(null);
         setIsAuthenticated(false);
+        Toast.show({
+          type: "error",
+          text2: "Время сессии истекло.Войдите в систему заново.",
+          visibilityTime: 3000,
+          autoHide: true,
+          topOffset: 80,
+          swipeable: true,
+        });
       } finally {
         setIsLoading(false);
       }
     };
 
     checkAuth();
-
   }, []);
 
   return (
@@ -67,7 +72,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
-  console.log(context, "context");
+
   if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
   }

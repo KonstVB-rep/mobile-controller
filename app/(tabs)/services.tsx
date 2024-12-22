@@ -12,7 +12,8 @@ const DATA = [
   },
 ];
 
-const ServicesList = () => {
+const Services = () => {
+
   return (
     <SafeAreaView className="flex-1 my-5">
       <ScrollView className="flex-1 px-4">
@@ -24,4 +25,4 @@ const ServicesList = () => {
   );
 };
 
-export default ServicesList;
+export default Services;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Text,
   View,
@@ -14,6 +14,7 @@ import SuccessNotification from "@/components/SuccessNotification";
 import { Colors } from "@/constants/styles-system";
 import CustomButton from "@/components/ui/CustomButton";
 import { Overlay } from "../Overlay/Overlay";
+import { SheetManager } from "react-native-actions-sheet";
 
 const QrCodeScanner = ({
   isOnFlashlight,
@@ -25,6 +26,8 @@ const QrCodeScanner = ({
   const [scanned, setScanned] = useState<boolean>(false);
   const [showBtnScan, setShowBtnScan] = useState<boolean>(false);
   const [permission, requestPermission] = useCameraPermissions();
+
+  const qrIsLocked = useRef<boolean>(false)
 
   // const handlePress = async (uri: string) => {
   // 	const url = uri; // Замените на ваш URL
@@ -43,17 +46,26 @@ const QrCodeScanner = ({
     type: string;
     data: string;
   }) => {
-    console.log(
-      `Bar code with type ${type} and data ${data} has been scanned!`
-    );
-    await new Promise((resolve) => setTimeout(resolve, 500))
-      .then(() => setScanned(true))
-      .then(() => setShowModal(true));
+    if(data && !qrIsLocked.current) {
+      console.log(
+        `Bar code with type ${type} and data ${data} has been scanned!`
+      );
+      qrIsLocked.current = true;
+      await new Promise((resolve) => setTimeout(resolve, 500))
+        .then(() => setScanned(true))
+        .then(() => SheetManager.show('gestures', {
+          payload: {
+            data,
+          },
+        }));
+      return;
+    }
   };
 
   const handlePressScan = () => {
     setScanned(false);
     setShowBtnScan(false);
+    qrIsLocked.current = false;
   };
 
   useEffect(() => {
@@ -76,7 +88,7 @@ const QrCodeScanner = ({
 
   if (!permission.granted) {
     return (
-      <SafeAreaView className="relative flex-1 bg-black-100">
+      <SafeAreaView className="relative flex-1 bg-primary">
         <View className="flex-1 gap-5 flex-cols items-center justify-center">
           <Feather name="camera-off" size={120} color="white" />
 
