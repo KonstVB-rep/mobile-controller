@@ -3,12 +3,11 @@ import {
   Text,
   View,
   ScrollView,
-  Alert,
   Image,
   LogBox,
 } from "react-native";
 import React, { useEffect } from "react";
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 import { AppwriteException } from "react-native-appwrite";
 
 import CustomButton from "@/components/ui/CustomButton";
@@ -17,9 +16,14 @@ import { IUser, useAuth } from "@/context/AuthContext";
 import { getCurrentUser, signIn } from "@/lib/appwrite";
 import { MotiView } from "moti";
 import Toast from "react-native-toast-message";
+import Loader from "@/components/Loader";
+import SplashScreen from "./splash-screen";
 
 LogBox.ignoreLogs([
-  "Время сессии истекло. Пожалуйста, введите свои учетные данные повторно.",
+  "Время сессии истекло.Войдите в систему заново. AppwriteException: Failed to verify JWT. Invalid token: Expired",
+]);
+LogBox.ignoreLogs([
+  "Время сессии истекло.Войдите в систему заново. AppwriteException: User (role: guests) missing scope (account)",
 ]);
 
 const SignIn = () => {
@@ -35,7 +39,14 @@ const SignIn = () => {
   const isEmptyForm = form.email.trim() === "" || form.password.trim() === "";
   const submit = async () => {
     if (isEmptyForm) {
-      return Alert.alert("Все поля обязательные.Пожалуйста,заполните их.");
+      return Toast.show({
+        type: "info",
+        text2: "Все поля обязательные.Пожалуйста,заполните их.",
+        visibilityTime: 1500,
+        autoHide: true,
+        topOffset: 80,
+        swipeable: true,
+      });
     }
 
     setIsSubmitting(true);
@@ -89,13 +100,7 @@ const SignIn = () => {
   }, [isAuthenticated]);
 
   if (isLoading) {
-    return (
-      <View className="flex-1 items-center justify-center bg-primary">
-        <Text className="text-white text-2xl font-psemibold">
-          Еще одну секунду...
-        </Text>
-      </View>
-    );
+    return <SplashScreen />;
   }
 
   return (
@@ -148,9 +153,12 @@ const SignIn = () => {
               title="Войти"
               onPress={submit}
               isLoading={isSubmitting}
-              containerStyles="mt-5 rounded-xl"
+              containerStyles="mt-5 rounded-xl bg-secondary"
               textStyles="text-xl text-white font-psemibold"
             />
+            <Link href="/(tabs)/services" className="mt-4 py-4">
+              <Text>Tabs</Text>
+            </Link>
           </View>
         </MotiView>
       </ScrollView>

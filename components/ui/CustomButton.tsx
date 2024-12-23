@@ -1,8 +1,6 @@
 import {
-  View,
   Text,
   TouchableOpacity,
-  ButtonProps,
   TouchableOpacityProps,
   ActivityIndicator,
 } from "react-native";
@@ -23,7 +21,7 @@ const CustomButton = ({
   return (
     <TouchableOpacity
       activeOpacity={0.7}
-      className={`bg-secondary p-4 flex flex-row justify-center items-center ${containerStyles} `}
+      className={`p-4 flex flex-row justify-center items-center ${containerStyles} `}
       disabled={isLoading}
       {...props}
     >

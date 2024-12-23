@@ -1,5 +1,4 @@
-import { MaterialIcons } from "@expo/vector-icons";
-import { Link } from "expo-router";
+import NotSupportNfc from "@/components/NotSupportNfc";
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -7,12 +6,12 @@ import {
   TouchableOpacity,
   Alert,
   Platform,
-  Pressable,
 } from "react-native";
 import NfcManager, { NfcEvents } from "react-native-nfc-manager";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const styleWrapper = "flex-1 items-center justify-center gap-4";
+const styleWrapper =
+  "flex-1 items-center justify-center gap-4 pb-10";
 const styleText = "text-white text-2xl";
 
 const NFCReader = () => {
@@ -35,7 +34,7 @@ const NFCReader = () => {
   }, []);
 
   useEffect(() => {
-    NfcManager.setEventListener(NfcEvents.DiscoverTag, (tag) => {
+    NfcManager.setEventListener(NfcEvents.DiscoverTag, (tag: any) => {
       Alert.alert(`tag found ${JSON.stringify(tag)}`);
     });
 
@@ -50,10 +49,13 @@ const NFCReader = () => {
 
   if (hasNfc === null) {
     return (
-      <View className={styleWrapper}>
-        <Text className={styleText}>Ваше устройство</Text>
-        <Text className={styleText}>не поддерживает NFC</Text>
-      </View>
+      <SafeAreaView className="relative flex-1 bg-primary">
+        <View className={styleWrapper}>
+          <NotSupportNfc width={180} height={180} />
+          <Text className={styleText}>Ваше устройство</Text>
+          <Text className={styleText}>не поддерживает NFC</Text>
+        </View>
+      </SafeAreaView>
     );
   }
 

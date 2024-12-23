@@ -8,6 +8,7 @@ export const Colors = {
   blackAlpha80: "#000000b3",
   blackAlpha50: "#00000080",
   blackAlpha30: "#0000004d",
+  darkBlue:"#1C3E74",
   gray: "#AFB2BF",
   transparent: "transparent",
   placeholder: "#949494",

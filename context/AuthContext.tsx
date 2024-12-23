@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import * as SecureStore from "expo-secure-store";
-import { client, getCurrentUser } from "@/lib/appwrite";
+import { client, getCurrentUser, sessionClear } from "@/lib/appwrite";
 import Toast from "react-native-toast-message";
+import { AppwriteException } from "react-native-appwrite";
 
 export interface IUser {
   username: string;
@@ -35,24 +36,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         const jwt = await SecureStore.getItemAsync("jwtToken");
         if (jwt) {
           client.setJWT(jwt);
-          
+
           const currentUser = await getCurrentUser();
 
           setUser(currentUser);
           setIsAuthenticated(true);
         }
       } catch (error) {
-        console.error("Время сессии истекло.Войдите в систему заново.", error);
-        setUser(null);
-        setIsAuthenticated(false);
-        Toast.show({
-          type: "error",
-          text2: "Время сессии истекло.Войдите в систему заново.",
-          visibilityTime: 3000,
-          autoHide: true,
-          topOffset: 80,
-          swipeable: true,
-        });
+        if ((error as AppwriteException).code == 401) {
+          await sessionClear();
+          setUser(null);
+          setIsAuthenticated(false);
+        } else {
+          console.error(
+            "Время сессии истекло.Войдите в систему заново.",
+            error
+          );
+          setUser(null);
+          setIsAuthenticated(false);
+          Toast.show({
+            type: "error",
+            text2: "Время сессии истекло.Войдите в систему заново.",
+            visibilityTime: 3000,
+            autoHide: true,
+            topOffset: 80,
+            swipeable: true,
+          });
+        }
       } finally {
         setIsLoading(false);
       }

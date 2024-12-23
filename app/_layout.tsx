@@ -11,14 +11,11 @@ import { AuthProvider } from "@/context/AuthContext";
 import "react-native-reanimated";
 import "react-native-gesture-handler";
 
-import "../global.css";
 import SplashScreen from "@/app/splash-screen";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "@/lib/toastConfig";
-import { SheetProvider } from "react-native-actions-sheet";
-import "@/lib/sheets";
 
-// SplashScreen.preventAutoHideAsync();
+import "../global.css";
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -54,24 +51,22 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
-      <SheetProvider context="global">
-        <SafeAreaProvider>
-          <Stack
-            screenOptions={{
-              headerShown: false,
-              contentStyle: {
-                backgroundColor: Colors.primary,
-              },
-            }}
-          >
-            <Stack.Screen name="(tabs)" />
-            <Stack.Screen name="scanner" />
-            <Stack.Screen name="index" />
-          </Stack>
-          <StatusBar style="light" backgroundColor={Colors.primary} />
-          <Toast config={toastConfig} />
-        </SafeAreaProvider>
-      </SheetProvider>
+      <SafeAreaProvider>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: {
+              backgroundColor: Colors.primary,
+            },
+          }}
+        >
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="scanner" />
+          <Stack.Screen name="index" />
+        </Stack>
+        <StatusBar style="light" backgroundColor={Colors.primary} />
+        <Toast config={toastConfig} />
+      </SafeAreaProvider>
     </AuthProvider>
   );
 }

@@ -1,23 +1,22 @@
 import React from "react";
-import { Redirect, Tabs } from "expo-router";
-import { FontAwesome6, SimpleLineIcons } from "@expo/vector-icons";
+import { Tabs } from "expo-router";
+import { FontAwesome6, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import TabIcon from "@/components/tabs-layout/TabIcon/TabIcon";
 import { Colors } from "@/constants/styles-system";
 import { useAuth } from "@/context/AuthContext";
-
 export default function TabLayout() {
   const { isLoading, isAuthenticated } = useAuth();
 
-  if (!isLoading && !isAuthenticated) return <Redirect href="/" />;
+  // if (!isLoading && !isAuthenticated) return <Redirect href="/" />;
 
   return (
     <Tabs
       screenOptions={{
         tabBarShowLabel: false,
         tabBarActiveTintColor: Colors.white,
-        tabBarInactiveTintColor: Colors.gray,
+        tabBarInactiveTintColor: Colors.black200,
         tabBarBackground: TabBarBackground,
         headerStyle: {
           backgroundColor: Colors.black100,
@@ -28,15 +27,15 @@ export default function TabLayout() {
         headerTitleAlign: "center",
         sceneStyle: { backgroundColor: Colors.primary },
         tabBarStyle: {
-          backgroundColor: Colors.black100,
+          width: 170,
+          marginHorizontal: "auto",
+          backgroundColor: "silver",
           borderTopWidth: 0,
           borderTopColor: Colors.primary,
-          height: 80,
+          height: 84,
           marginBottom: 10,
-          marginHorizontal: 5,
           borderRadius: 100,
         },
-        tabBarActiveBackgroundColor: Colors.secondary,
       }}
     >
       <Tabs.Screen
@@ -61,12 +60,15 @@ export default function TabLayout() {
           title: "Выйти из приложения",
           tabBarIcon: ({ color, focused }) => (
             <TabIcon name="Выйти" color={color} focused={focused}>
-              <SimpleLineIcons
+              <MaterialCommunityIcons name="exit-to-app"  size={24}
+                color={color}
+                className="w-full text-center " />
+              {/* <AntDesign
                 name="logout"
                 size={24}
                 color={color}
-                className="w-full text-center mt-1"
-              />
+                className="w-full text-center "
+              /> */}
             </TabIcon>
           ),
         }}

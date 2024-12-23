@@ -5,29 +5,31 @@ import {
   Pressable,
   SafeAreaView,
   Platform,
-  Alert,
 } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 
-import SuccessNotification from "@/components/SuccessNotification";
 import { Colors } from "@/constants/styles-system";
 import CustomButton from "@/components/ui/CustomButton";
 import { Overlay } from "../Overlay/Overlay";
-import { SheetManager } from "react-native-actions-sheet";
+import { ActionSheetRef, SheetManager } from "react-native-actions-sheet";
+import ScanDrawer from "@/components/drawer/ScanDrawer/ScanDrawer";
 
 const QrCodeScanner = ({
   isOnFlashlight,
-  setShowModal,
+  // setShowModal,
 }: {
   isOnFlashlight: boolean;
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  // setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [scanned, setScanned] = useState<boolean>(false);
   const [showBtnScan, setShowBtnScan] = useState<boolean>(false);
   const [permission, requestPermission] = useCameraPermissions();
+  const [dataScan, setDataScan] = useState<{ type: string; data: string } | null>(null);
 
-  const qrIsLocked = useRef<boolean>(false)
+  const actionSheetRef = useRef<ActionSheetRef>(null);
+
+  const qrIsLocked = useRef<boolean>(false);
 
   // const handlePress = async (uri: string) => {
   // 	const url = uri; // Замените на ваш URL
@@ -46,18 +48,17 @@ const QrCodeScanner = ({
     type: string;
     data: string;
   }) => {
-    if(data && !qrIsLocked.current) {
+    if (data && !qrIsLocked.current) {
       console.log(
         `Bar code with type ${type} and data ${data} has been scanned!`
       );
       qrIsLocked.current = true;
       await new Promise((resolve) => setTimeout(resolve, 500))
-        .then(() => setScanned(true))
-        .then(() => SheetManager.show('gestures', {
-          payload: {
-            data,
-          },
-        }));
+        .then(() => {
+          setScanned(true);
+          setDataScan({ type, data });
+        })
+        .then(() => actionSheetRef.current?.show())
       return;
     }
   };
@@ -65,6 +66,7 @@ const QrCodeScanner = ({
   const handlePressScan = () => {
     setScanned(false);
     setShowBtnScan(false);
+    setDataScan(null);
     qrIsLocked.current = false;
   };
 
@@ -100,7 +102,7 @@ const QrCodeScanner = ({
             onPress={requestPermission}
             title="Предоставьте разрешение"
             textStyles="text-white text-xl"
-            containerStyles="max-w-[300px] mt-5 rounded-lg"
+            containerStyles="max-w-[300px] mt-5 rounded-lg bg-darkBlue"
           />
         </View>
       </SafeAreaView>
@@ -108,46 +110,50 @@ const QrCodeScanner = ({
   }
 
   return (
-    <View className="relative flex-1 bg-black-100">
-      <SuccessNotification
-        successText={scanned ? "QR-код успешно сканирован" : null}
-      />
+    <>
+      <View className="relative flex-1 bg-black-100">
 
-      <CameraView
-        animateShutter={true}
-        facing="back"
-        onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
-        barcodeScannerSettings={{
-          barcodeTypes: ["qr", "pdf417"],
-        }}
-        enableTorch={isOnFlashlight}
-        autofocus={"on"}
-        style={{
-          flex: 1,
-        }}
-        className="absolute top-0 left-0 right-0 bottom-0 -z-[10]"
-      />
+        <CameraView
+          animateShutter={true}
+          facing="back"
+          onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
+          barcodeScannerSettings={{
+            barcodeTypes: ["qr", "pdf417"],
+          }}
+          enableTorch={isOnFlashlight}
+          autofocus={"on"}
+          style={{
+            flex: 1,
+          }}
+          className="absolute top-0 left-0 right-0 bottom-0 -z-[10]"
+        />
 
-      {Platform.OS === "ios" || Platform.OS === "android" ? (
-        <Overlay keyValue={showBtnScan ? "fill" : "inner"} />
-      ) : null}
+        {Platform.OS === "ios" || Platform.OS === "android" ? (
+          <Overlay keyValue={showBtnScan ? "fill" : "inner"} />
+        ) : null}
 
-      {showBtnScan && (
-        <Pressable
-          onPress={handlePressScan}
-          className="absolute active:opacity-75 h-[120px] w-[120px] bg-black-100 rounded-full bottom-0 left-1/2 opacity-transform -translate-x-1/2 translate-y-1/2 flex items-center justify-center border-2 ring-offset-4 border-solid border-secondary z-[11]"
-        >
-          <MaterialIcons
-            name="qr-code-scanner"
-            size={48}
-            color={Colors.white}
-          />
-          <Text className="text-white text-base block text-center">
-            Сканировать
-          </Text>
-        </Pressable>
-      )}
-    </View>
+        {showBtnScan && (
+          <Pressable
+            onPress={handlePressScan}
+            className="absolute active:opacity-75 h-[120px] w-[120px] bg-black-100 rounded-full bottom-0 left-1/2 opacity-transform -translate-x-1/2 translate-y-1/2 flex items-center justify-center border-2 ring-offset-4 border-solid border-secondary z-[11]"
+          >
+            <MaterialIcons
+              name="qr-code-scanner"
+              size={48}
+              color={Colors.white}
+            />
+            <Text className="text-white text-base block text-center">
+              Сканировать
+            </Text>
+          </Pressable>
+        )}
+      </View>
+      <ScanDrawer ref={actionSheetRef}>
+        <Text className="text-white text-2xl">Scan drawer</Text>
+        <Text className="text-white text-2xl">{dataScan?.type || "Нет данных"}</Text>
+        <Text className="text-white text-2xl">{dataScan?.data || "Нет данных"}</Text>
+      </ScanDrawer>
+    </>
   );
 };
 

@@ -13,7 +13,7 @@ const DATA = [
 ];
 
 const Services = () => {
-
+ 
   return (
     <SafeAreaView className="flex-1 my-5">
       <ScrollView className="flex-1 px-4">

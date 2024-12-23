@@ -1,5 +1,6 @@
+import { Colors } from "@/constants/styles-system";
 import { View, Text } from "react-native";
-        
+
 const TabIcon = ({
   children,
   name,
@@ -11,16 +12,25 @@ const TabIcon = ({
   color: string;
   focused: boolean;
 }) => {
-
   return (
-    <View className="mt-12 h-20 w-20 gap-2 align-center justify-center">
+    <View
+      className="relative mt-12 h-24 w-24 gap-1 align-center justify-center rounded-full"
+      style={{
+        backgroundColor: focused ? Colors.darkBlue : "transparent",
+        width: 80,
+        height: 80,
+        marginTop: 46,
+      }}
+    >
       {children}
-      <Text
-        className={`text-center text-base text-psemibold ${focused ? "text-white" : "text-gray-100"}`}
-        style={{ color }}
-      >
-        {name}
-      </Text>
+      {focused ? null : (
+        <Text
+          className="text-center text-base text-psemibold"
+          style={{ color: color }}
+        >
+          {name}
+        </Text>
+      )}
     </View>
   );
 };

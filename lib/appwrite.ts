@@ -28,16 +28,13 @@ client
   .setProject(appWriteConfig.projectId)
   .setPlatform(appWriteConfig.platform);
 
-const sessionClear = async () => {
-  const jwtSecure = await SecureStore.getItemAsync("jwtToken");
-  if (jwtSecure) {
+  export const sessionClear = async () => {
     client.setJWT("");
     // Удаление сессии пользователя
     await account.deleteSession("current");
 
     // Удаление JWT из SecureStore
     await SecureStore.deleteItemAsync("jwtToken");
-  }
 };
 
 export const getCurrentUser = async (): Promise<IUser> => {
