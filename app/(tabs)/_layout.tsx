@@ -27,14 +27,17 @@ export default function TabLayout() {
         headerTitleAlign: "center",
         sceneStyle: { backgroundColor: Colors.primary },
         tabBarStyle: {
-          width: 170,
+          width: 154,
           marginHorizontal: "auto",
           backgroundColor: "silver",
+          display: "flex",
+          justifyContent: "space-between",
           borderTopWidth: 0,
           borderTopColor: Colors.primary,
-          height: 84,
+          height: 68,
+          paddingHorizontal: 0,
           marginBottom: 10,
-          borderRadius: 100,
+          borderRadius: 200,
         },
       }}
     >
@@ -46,7 +49,7 @@ export default function TabLayout() {
             <TabIcon name="Услуги" color={color} focused={focused}>
               <FontAwesome6
                 name="list"
-                size={24}
+                size={20}
                 color={color}
                 className="w-full text-center"
               />
@@ -60,15 +63,9 @@ export default function TabLayout() {
           title: "Выйти из приложения",
           tabBarIcon: ({ color, focused }) => (
             <TabIcon name="Выйти" color={color} focused={focused}>
-              <MaterialCommunityIcons name="exit-to-app"  size={24}
+              <MaterialCommunityIcons name="exit-to-app"  size={20}
                 color={color}
-                className="w-full text-center " />
-              {/* <AntDesign
-                name="logout"
-                size={24}
-                color={color}
-                className="w-full text-center "
-              /> */}
+                className="w-full text-center" />
             </TabIcon>
           ),
         }}

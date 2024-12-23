@@ -16,7 +16,6 @@ const Tab = () => {
     await signOut();
     setUser(null);
     setIsAuthenticated(false);
-    router.replace("/");
   };
 
   return (

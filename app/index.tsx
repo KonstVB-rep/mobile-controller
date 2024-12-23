@@ -99,9 +99,9 @@ const SignIn = () => {
     }
   }, [isAuthenticated]);
 
-  if (isLoading) {
-    return <SplashScreen />;
-  }
+  // if (isLoading) {
+  //   return <SplashScreen />;
+  // }
 
   return (
     <SafeAreaView className="bg-primary h-full grow">

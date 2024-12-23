@@ -47,6 +47,8 @@ export const getCurrentUser = async (): Promise<IUser> => {
 };
 
 export const signIn = async (email: string, password: string) => {
+  console.log(email, password);
+  console.log("signIn", await account.createEmailPasswordSession(email, password));
   try {
     // Создание сессии пользователя
     await sessionClear();
@@ -75,9 +77,13 @@ export const signIn = async (email: string, password: string) => {
 };
 
 export const signOut = async () => {
-  try {
-    await sessionClear();
 
+  try {
+    const jwt = await SecureStore.getItemAsync("jwtToken");
+    if(jwt){
+      await sessionClear();
+    }
+    console.log("signOut");
     if (Platform.OS === "android") {
       BackHandler.exitApp();
     }

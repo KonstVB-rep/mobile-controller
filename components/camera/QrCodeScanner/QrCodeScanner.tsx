@@ -53,12 +53,19 @@ const QrCodeScanner = ({
         `Bar code with type ${type} and data ${data} has been scanned!`
       );
       qrIsLocked.current = true;
+      // await new Promise((resolve) => setTimeout(resolve, 500))
+      //   .then(() => {
+      //     setScanned(true);
+      //     setDataScan({ type, data });
+      //   })
+      //   .then(() => actionSheetRef.current?.show())
       await new Promise((resolve) => setTimeout(resolve, 500))
-        .then(() => {
-          setScanned(true);
-          setDataScan({ type, data });
-        })
-        .then(() => actionSheetRef.current?.show())
+      .then(() => setScanned(true))
+      .then(() => SheetManager.show('gestures', {
+        payload: {
+          data,
+        },
+      }));
       return;
     }
   };
@@ -122,10 +129,11 @@ const QrCodeScanner = ({
           }}
           enableTorch={isOnFlashlight}
           autofocus={"on"}
+          zoom={0.5}
           style={{
             flex: 1,
           }}
-          className="absolute top-0 left-0 right-0 bottom-0 -z-[10]"
+          className="absolute top-0 left-0 right-0 bottom-0 -z-[100]"
         />
 
         {Platform.OS === "ios" || Platform.OS === "android" ? (
@@ -135,7 +143,7 @@ const QrCodeScanner = ({
         {showBtnScan && (
           <Pressable
             onPress={handlePressScan}
-            className="absolute active:opacity-75 h-[120px] w-[120px] bg-black-100 rounded-full bottom-0 left-1/2 opacity-transform -translate-x-1/2 translate-y-1/2 flex items-center justify-center border-2 ring-offset-4 border-solid border-secondary z-[11]"
+            className="absolute active:opacity-75 h-[120px] w-[120px] bg-black-100 rounded-full bottom-40 left-1/2 opacity-transform -translate-x-1/2 translate-y-1/2 flex items-center justify-center border-2 ring-offset-4 border-solid border-secondary z-[11]"
           >
             <MaterialIcons
               name="qr-code-scanner"
@@ -148,11 +156,11 @@ const QrCodeScanner = ({
           </Pressable>
         )}
       </View>
-      <ScanDrawer ref={actionSheetRef}>
+      {/* <ScanDrawer ref={actionSheetRef}>
         <Text className="text-white text-2xl">Scan drawer</Text>
         <Text className="text-white text-2xl">{dataScan?.type || "Нет данных"}</Text>
         <Text className="text-white text-2xl">{dataScan?.data || "Нет данных"}</Text>
-      </ScanDrawer>
+      </ScanDrawer> */}
     </>
   );
 };

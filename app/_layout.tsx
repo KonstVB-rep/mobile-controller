@@ -6,7 +6,7 @@ import "react-native-reanimated";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { Colors } from "@/constants/styles-system";
-import { AuthProvider } from "@/context/AuthContext";
+import { AuthProvider, useAuth } from "@/context/AuthContext";
 
 import "react-native-reanimated";
 import "react-native-gesture-handler";
@@ -16,6 +16,9 @@ import Toast from "react-native-toast-message";
 import { toastConfig } from "@/lib/toastConfig";
 
 import "../global.css";
+import { SheetProvider } from "react-native-actions-sheet";
+import "@/lib/sheets";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -32,7 +35,7 @@ export default function RootLayout() {
     if (loaded) {
       timeout = setTimeout(() => {
         setSplashScreenShow(false);
-      }, 1000);
+      }, 500);
       // SplashScreen.hideAsync();
     }
 
@@ -41,7 +44,7 @@ export default function RootLayout() {
     };
   }, [loaded, error]);
 
-  if (splashScreenShow) {
+  if (!loaded && splashScreenShow) {
     return <SplashScreen />;
   }
 
@@ -50,23 +53,27 @@ export default function RootLayout() {
   }
 
   return (
-    <AuthProvider>
-      <SafeAreaProvider>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            contentStyle: {
-              backgroundColor: Colors.primary,
-            },
-          }}
-        >
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="scanner" />
-          <Stack.Screen name="index" />
-        </Stack>
-        <StatusBar style="light" backgroundColor={Colors.primary} />
-        <Toast config={toastConfig} />
-      </SafeAreaProvider>
-    </AuthProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SheetProvider context="global">
+        <SafeAreaProvider>
+          <AuthProvider>
+            <Stack
+              screenOptions={{
+                headerShown: false,
+                contentStyle: {
+                  backgroundColor: Colors.primary,
+                },
+              }}
+            >
+              <Stack.Screen name="(tabs)" />
+              <Stack.Screen name="scanner" />
+              <Stack.Screen name="index" />
+            </Stack>
+          </AuthProvider>
+          <StatusBar style="light" backgroundColor={Colors.primary} />
+          <Toast config={toastConfig} />
+        </SafeAreaProvider>
+      </SheetProvider>
+    </GestureHandlerRootView>
   );
 }
