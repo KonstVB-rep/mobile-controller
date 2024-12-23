@@ -18,18 +18,19 @@ export const toastConfig: ToastConfig = {
         height: 60,
         boxShadow: "0px 0px 1px 5px rgba(141, 140, 140, 1)",
       }}
-      contentContainerStyle={{ paddingHorizontal: 15 }}
+      contentContainerStyle={{ padding: 10 }}
       text1Style={{
         fontSize: 16,
         fontWeight: "400",
         color: "black",
       }}
       text2Style={{
-        fontSize: 18,
+        fontSize: 14,
         fontWeight: "400",
         color: "black",
         textAlign: "center",
       }}
+      text2NumberOfLines={3}
     />
   ),
   success: (props) => (
@@ -41,16 +42,17 @@ export const toastConfig: ToastConfig = {
         height: 60,
         boxShadow: "0px 0px 1px 5px rgb(15, 194, 83)",
       }}
-      contentContainerStyle={{ paddingHorizontal: 15 }}
+      contentContainerStyle={{ padding: 10}}
       text1Style={{
         fontSize: 16,
         color: "black",
       }}
       text2Style={{
-        fontSize: 16,
+        fontSize: 14,
         color: "black",
         textAlign: "center",
       }}
+      text2NumberOfLines={3}
     />
   ),
   /*
@@ -64,15 +66,15 @@ export const toastConfig: ToastConfig = {
         borderLeftColor: "transparent",
         borderRadius: 100,
         boxShadow: "0px 0px 1px 5px rgb(194, 57, 15)",
-        height: "auto",
+        height: 60,
       }}
-      contentContainerStyle={{ paddingHorizontal: 15,  padding: 10 }}
+      contentContainerStyle={{ padding: 10 }}
       text1Style={{
         fontSize: 14,
         color: "black",
       }}
       text2Style={{
-        fontSize: 16,
+        fontSize: 14,
         color: "black",
         textAlign: "center",
       }}

@@ -41,7 +41,7 @@ const SignIn = () => {
     if (isEmptyForm) {
       return Toast.show({
         type: "info",
-        text2: "Все поля обязательные.Пожалуйста,заполните их.",
+        text2: "Все поля обязательные для заполнения.",
         visibilityTime: 1500,
         autoHide: true,
         topOffset: 80,

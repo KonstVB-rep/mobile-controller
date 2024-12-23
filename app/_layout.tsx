@@ -18,7 +18,6 @@ import { toastConfig } from "@/lib/toastConfig";
 import "../global.css";
 import { SheetProvider } from "react-native-actions-sheet";
 import "@/lib/sheets";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -53,7 +52,6 @@ export default function RootLayout() {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
       <SheetProvider context="global">
         <SafeAreaProvider>
           <AuthProvider>
@@ -74,6 +72,5 @@ export default function RootLayout() {
           <Toast config={toastConfig} />
         </SafeAreaProvider>
       </SheetProvider>
-    </GestureHandlerRootView>
   );
 }
