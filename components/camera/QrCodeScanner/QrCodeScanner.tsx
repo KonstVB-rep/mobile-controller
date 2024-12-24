@@ -6,28 +6,32 @@ import {
   SafeAreaView,
   Platform,
 } from "react-native";
-import { CameraView, useCameraPermissions } from "expo-camera";
+import { CameraView, PermissionResponse, useCameraPermissions } from "expo-camera";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 
 import { Colors } from "@/constants/styles-system";
 import CustomButton from "@/components/ui/CustomButton";
 import { Overlay } from "../Overlay/Overlay";
-import { ActionSheetRef, SheetManager } from "react-native-actions-sheet";
-import ScanDrawer from "@/components/drawer/ScanDrawer/ScanDrawer";
+import { SheetManager } from "react-native-actions-sheet";
+// import ScanDrawer from "@/components/drawer/ScanDrawer/ScanDrawer";
 
 const QrCodeScanner = ({
   isOnFlashlight,
+  permission,
+  requestPermission
   // setShowModal,
 }: {
   isOnFlashlight: boolean;
+  permission: PermissionResponse,
+  requestPermission: () => Promise<PermissionResponse>
   // setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [scanned, setScanned] = useState<boolean>(false);
   const [showBtnScan, setShowBtnScan] = useState<boolean>(false);
-  const [permission, requestPermission] = useCameraPermissions();
-  const [dataScan, setDataScan] = useState<{ type: string; data: string } | null>(null);
+  // const [permission, requestPermission] = useCameraPermissions();
+  // const [dataScan, setDataScan] = useState<{ type: string; data: string } | null>(null);
 
-  const actionSheetRef = useRef<ActionSheetRef>(null);
+  // const actionSheetRef = useRef<ActionSheetRef>(null);
 
   const qrIsLocked = useRef<boolean>(false);
 
@@ -73,7 +77,7 @@ const QrCodeScanner = ({
   const handlePressScan = () => {
     setScanned(false);
     setShowBtnScan(false);
-    setDataScan(null);
+    // setDataScan(null);
     qrIsLocked.current = false;
   };
 
@@ -129,11 +133,11 @@ const QrCodeScanner = ({
           }}
           enableTorch={isOnFlashlight}
           autofocus={"on"}
-          zoom={0.5}
+          zoom={0.3}
           style={{
             flex: 1,
           }}
-          className="absolute top-0 left-0 right-0 bottom-0 -z-[100]"
+          className="absolute top-0 left-0 right-0 bottom-0"
         />
 
         {Platform.OS === "ios" || Platform.OS === "android" ? (
@@ -143,7 +147,7 @@ const QrCodeScanner = ({
         {showBtnScan && (
           <Pressable
             onPress={handlePressScan}
-            className="absolute active:opacity-75 h-[120px] w-[120px] bg-black-100 rounded-full bottom-40 left-1/2 opacity-transform -translate-x-1/2 translate-y-1/2 flex items-center justify-center border-2 ring-offset-4 border-solid border-secondary z-[11]"
+            className="absolute active:opacity-75 h-[120px] w-[120px] bg-black-100 rounded-full bottom-0 left-1/2 opacity-transform -translate-x-1/2 translate-y-1/2 flex items-center justify-center border-2 ring-offset-4 border-solid border-secondary z-[100]"
           >
             <MaterialIcons
               name="qr-code-scanner"
@@ -156,11 +160,6 @@ const QrCodeScanner = ({
           </Pressable>
         )}
       </View>
-      {/* <ScanDrawer ref={actionSheetRef}>
-        <Text className="text-white text-2xl">Scan drawer</Text>
-        <Text className="text-white text-2xl">{dataScan?.type || "Нет данных"}</Text>
-        <Text className="text-white text-2xl">{dataScan?.data || "Нет данных"}</Text>
-      </ScanDrawer> */}
     </>
   );
 };

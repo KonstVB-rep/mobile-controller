@@ -65,10 +65,10 @@ export const toastConfig: ToastConfig = {
       style={{
         borderLeftColor: "transparent",
         borderRadius: 100,
-        boxShadow: "0px 0px 1px 5px rgb(194, 57, 15)",
-        height: 60,
+        boxShadow: "0px 0px 1px 5px #d62828",
+        height: 80,
       }}
-      contentContainerStyle={{ padding: 10 }}
+      contentContainerStyle={{ padding: 5 }}
       text1Style={{
         fontSize: 14,
         color: "black",
@@ -78,7 +78,29 @@ export const toastConfig: ToastConfig = {
         color: "black",
         textAlign: "center",
       }}
-      text2NumberOfLines={3}
+      text2NumberOfLines={4}
+    />
+  ),
+  errorSignIn: (props) => (
+    <ErrorToast
+      {...props}
+      style={{
+        borderLeftColor: "transparent",
+        borderRadius: 100,
+        boxShadow: "0px 0px 1px 5px #d62828",
+        height: 100,
+      }}
+      contentContainerStyle={{ padding: 5 }}
+      text1Style={{
+        fontSize: 14,
+        color: "black",
+      }}
+      text2Style={{
+        fontSize: 14,
+        color: "black",
+        textAlign: "center",
+      }}
+      text2NumberOfLines={4}
     />
   ),
   /*

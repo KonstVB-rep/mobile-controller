@@ -1,5 +1,5 @@
 import React from "react";
-import { Tabs } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import { FontAwesome6, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import TabBarBackground from "@/components/ui/TabBarBackground";
@@ -9,7 +9,7 @@ import { useAuth } from "@/context/AuthContext";
 export default function TabLayout() {
   const { isLoading, isAuthenticated } = useAuth();
 
-  // if (!isLoading && !isAuthenticated) return <Redirect href="/" />;
+  if (!isLoading && !isAuthenticated) return <Redirect href="/" />;
 
   return (
     <Tabs
@@ -27,14 +27,14 @@ export default function TabLayout() {
         headerTitleAlign: "center",
         sceneStyle: { backgroundColor: Colors.primary },
         tabBarStyle: {
-          width: 154,
+          width: 148,
           marginHorizontal: "auto",
           backgroundColor: "silver",
           display: "flex",
           justifyContent: "space-between",
           borderTopWidth: 0,
           borderTopColor: Colors.primary,
-          height: 68,
+          height: 70,
           paddingHorizontal: 0,
           marginBottom: 10,
           borderRadius: 200,
@@ -54,7 +54,7 @@ export default function TabLayout() {
                 className="w-full text-center"
               />
             </TabIcon>
-          ),
+          )
         }}
       />
       <Tabs.Screen
@@ -63,9 +63,12 @@ export default function TabLayout() {
           title: "Выйти из приложения",
           tabBarIcon: ({ color, focused }) => (
             <TabIcon name="Выйти" color={color} focused={focused}>
-              <MaterialCommunityIcons name="exit-to-app"  size={20}
+              <MaterialCommunityIcons
+                name="exit-to-app"
+                size={20}
                 color={color}
-                className="w-full text-center" />
+                className="w-full text-center"
+              />
             </TabIcon>
           ),
         }}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Stack } from "expo-router";
+import { Redirect, Stack } from "expo-router";
 
 import { Colors } from "@/constants/styles-system";
 import { useAuth } from "@/context/AuthContext";
@@ -7,7 +7,7 @@ import { useAuth } from "@/context/AuthContext";
 const ServicesLayout = () => {
   const { isLoading, isAuthenticated } = useAuth();
 
-  // if (!isLoading && !isAuthenticated) return <Redirect href="/" />;
+  if (!isLoading && !isAuthenticated) return <Redirect href="/" />;
 
   return (
     <Stack

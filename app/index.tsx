@@ -7,8 +7,7 @@ import {
   LogBox,
 } from "react-native";
 import React, { useEffect } from "react";
-import { Link, router } from "expo-router";
-import { AppwriteException } from "react-native-appwrite";
+import { router } from "expo-router";
 
 import CustomButton from "@/components/ui/CustomButton";
 import FormField from "@/components/ui/FormField";
@@ -16,20 +15,15 @@ import { IUser, useAuth } from "@/context/AuthContext";
 import { getCurrentUser, signIn } from "@/lib/appwrite";
 import { MotiView } from "moti";
 import Toast from "react-native-toast-message";
-import Loader from "@/components/Loader";
 import SplashScreen from "./splash-screen";
 
-LogBox.ignoreLogs([
-  "Время сессии истекло.Войдите в систему заново. AppwriteException: Failed to verify JWT. Invalid token: Expired",
-]);
-LogBox.ignoreLogs([
-  "Время сессии истекло.Войдите в систему заново. AppwriteException: User (role: guests) missing scope (account)",
-]);
+LogBox.ignoreAllLogs();
 
 const SignIn = () => {
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
 
-  const { isLoading, isAuthenticated, setUser, setIsAuthenticated } = useAuth();
+  const { isLoading, isAuthenticated, setUser, setIsAuthenticated } =
+    useAuth();
 
   const [form, setForm] = React.useState({
     email: "",
@@ -70,38 +64,30 @@ const SignIn = () => {
 
       router.replace("/(tabs)/services");
     } catch (error) {
-      if (error instanceof Error || error instanceof AppwriteException) {
-        Toast.show({
-          type: "error",
-          text2: `Ошибка, ${error.message}!`,
-          visibilityTime: 3000,
-          autoHide: true,
-          topOffset: 80,
-          swipeable: true,
-        });
-      } else
-        Toast.show({
-          type: "error",
-          text2: `Ошибка, ${error}!`,
-          visibilityTime: 3000,
-          autoHide: true,
-          topOffset: 80,
-          swipeable: true,
-        });
+      console.log("SignIn", error);
+
+      Toast.show({
+        type: "errorSignIn",
+        text2: `Не удается войти в приложение. Проверьте свои учетные данные и повторите попытку. Если проблема повторяется перезагрузите приложение.`,
+        visibilityTime: 5000,
+        autoHide: true,
+        topOffset: 80,
+        swipeable: true,
+      });
     } finally {
       setIsSubmitting(false);
     }
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (!isLoading && isAuthenticated) {
       router.replace("/(tabs)/services");
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, isLoading]);
 
-  // if (isLoading) {
-  //   return <SplashScreen />;
-  // }
+  if (isLoading) {
+    return <SplashScreen />;
+  }
 
   return (
     <SafeAreaView className="bg-primary h-full grow">
@@ -156,9 +142,6 @@ const SignIn = () => {
               containerStyles="mt-5 rounded-xl bg-secondary"
               textStyles="text-xl text-white font-psemibold"
             />
-            <Link href="/(tabs)/services" className="mt-4 py-4">
-              <Text>Tabs</Text>
-            </Link>
           </View>
         </MotiView>
       </ScrollView>

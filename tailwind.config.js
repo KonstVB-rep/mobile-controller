@@ -34,7 +34,7 @@ module.exports = {
           100: "#f5f5f5",
         },
         darkBlue: "#1C3E74",
-        alert: "#CC384E",
+        alert: "#d62828",
         success: "#00C48C",
       },
       fontFamily: {

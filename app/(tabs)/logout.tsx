@@ -1,9 +1,5 @@
 import { router } from "expo-router";
-import {
-  View,
-  Text,
-  SafeAreaView,
-} from "react-native";
+import { View, Text, SafeAreaView } from "react-native";
 
 import CustomButton from "@/components/ui/CustomButton";
 import { useAuth } from "@/context/AuthContext";
@@ -13,18 +9,29 @@ const Tab = () => {
   const { setUser, setIsAuthenticated } = useAuth();
 
   const logout = async () => {
-    await signOut();
-    setUser(null);
-    setIsAuthenticated(false);
+    try {
+      setUser(null);
+      setIsAuthenticated(false);
+      await signOut();
+    } catch (error) {
+      console.log("logout", error);
+      setUser(null);
+      setIsAuthenticated(false);
+    }
   };
 
   return (
-    <SafeAreaView className="flex-1 items-center justify-center relative gap-10">
-      <Text className="text-lg font-psemibold leading-10 text-white text-center px-4">
-        Сессия будет прекращена, для возобновления работы в приложении
-        необходимо будет снова выполнить вход.
-      </Text>
-      <View className="flex-col gap-10 w-full pb-5 align-center justify-center">
+    <View className="flex-1 items-center justify-start pt-20 relative gap-5">
+      <View>
+        <Text className="text-lg font-psemibold leading-10 text-white text-center px-4">
+          Сессия будет прекращена.
+        </Text>
+        <Text className="text-lg font-psemibold leading-10 text-white text-center px-4">
+          Для возобновления работы в приложении необходимо будет снова выполнить
+          вход.
+        </Text>
+      </View>
+      <View className="flex-1 flex-col w-full pb-5 align-center justify-center gap-20 pb-20">
         <Text className="text-2xl font-psemibold leading-10 text-white text-center">
           Вы уверены, что хотите выйти?
         </Text>
@@ -43,7 +50,7 @@ const Tab = () => {
           />
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

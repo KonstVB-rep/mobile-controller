@@ -3,26 +3,31 @@ import { useLocalSearchParams } from "expo-router";
 
 import useFlashlight from "@/hooks/useFlashlight";
 import QrCodeScanner from "@/components/camera/QrCodeScanner/QrCodeScanner";
-import { SafeAreaView } from "react-native";
+import { View } from "react-native";
 import BottomMenuQrScanner from "@/components/camera/BottomMenuQrScanner/BottomMenuQrScanner";
+import { PermissionResponse, useCameraPermissions } from "expo-camera";
 
 
 const QrScannerServicePage = () => {
   const { title } = useLocalSearchParams();
+   const [permission, requestPermission] = useCameraPermissions();
 
   const { isOnFlashlight, setIsOnFlashlight } = useFlashlight();
 
   return (
-    <SafeAreaView className="flex-1 relative">
+    <View className="flex-1 relative">
       <QrCodeScanner
         isOnFlashlight={isOnFlashlight}
+        permission={permission as PermissionResponse}
+        requestPermission={requestPermission}
       />
       <BottomMenuQrScanner
         isOnFlashlight={isOnFlashlight}
+        permission={permission as PermissionResponse}
         handlePressFlashlight={() => setIsOnFlashlight(!isOnFlashlight)}
         titleSegment={title as string}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 

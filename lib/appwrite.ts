@@ -2,13 +2,11 @@ import {
   Client,
   Account,
   Databases,
-
 } from "react-native-appwrite";
 
 import * as SecureStore from "expo-secure-store";
 import { IUser } from "@/context/AuthContext";
 import { BackHandler, Platform } from "react-native";
-import Toast from "react-native-toast-message";
 
 export const appWriteConfig = {
   endpoint: process.env.EXPO_PUBLIC_ENDPOINT!,
@@ -31,10 +29,13 @@ client
   export const sessionClear = async () => {
     client.setJWT("");
     // Удаление сессии пользователя
+  const timeout = setTimeout(async () => {
     await account.deleteSession("current");
 
     // Удаление JWT из SecureStore
     await SecureStore.deleteItemAsync("jwtToken");
+    clearTimeout(timeout);
+  },100)
 };
 
 export const getCurrentUser = async (): Promise<IUser> => {
@@ -47,14 +48,16 @@ export const getCurrentUser = async (): Promise<IUser> => {
 };
 
 export const signIn = async (email: string, password: string) => {
-  console.log(email, password);
-  console.log("signIn", await account.createEmailPasswordSession(email, password));
+  console.log('signIn', email, password)
   try {
     // Создание сессии пользователя
     await sessionClear();
-    await account.createEmailPasswordSession(email, password);
 
-    const { jwt } = await account.createJWT();
+    // Создание сессии пользователя
+    const session = await account.createEmailPasswordSession(email, password);
+
+    if(session){
+      const { jwt } = await account.createJWT();
 
     // Сохранение JWT в SecureStore
     await SecureStore.setItemAsync("jwtToken", jwt);
@@ -64,14 +67,11 @@ export const signIn = async (email: string, password: string) => {
 
     // Получение текущего пользователя
     return await getCurrentUser();
+  }
   } catch (error) {
     console.error(
       "Не удалось выполнить вход в систему:",
       JSON.stringify(error)
-    );
-    // Генерация пользовательского сообщения об ошибке
-    throw new Error(
-      "Не удается войти в приложение. Проверьте свои учетные данные и повторите попытку."
     );
   }
 };
@@ -89,14 +89,5 @@ export const signOut = async () => {
     }
   } catch (error) {
     console.error("Error signOut", JSON.stringify(error));
-
-    Toast.show({
-      type: "error",
-      text2: "Не удается выйти из системы. Пожалуйста, попробуйте снова.",
-      visibilityTime: 3000,
-      autoHide: true,
-      topOffset: 80,
-      swipeable: true,
-    });
   }
 };

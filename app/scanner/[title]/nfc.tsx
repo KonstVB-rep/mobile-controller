@@ -1,17 +1,10 @@
 import NotSupportNfc from "@/components/NotSupportNfc";
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Alert,
-  Platform,
-} from "react-native";
+import { View, Text, TouchableOpacity, Alert, Platform } from "react-native";
 import NfcManager, { NfcEvents } from "react-native-nfc-manager";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const styleWrapper =
-  "flex-1 items-center justify-center gap-4 pb-10";
+const styleWrapper = "flex-1 items-center justify-center gap-4 pb-10";
 const styleText = "text-white text-2xl";
 
 const NFCReader = () => {
@@ -47,7 +40,7 @@ const NFCReader = () => {
     await NfcManager.registerTagEvent();
   };
 
-  if (hasNfc === null) {
+  if (!hasNfc || Platform.OS === "web") {
     return (
       <SafeAreaView className="relative flex-1 bg-primary">
         <View className={styleWrapper}>
@@ -59,14 +52,6 @@ const NFCReader = () => {
     );
   }
 
-  if (!hasNfc || Platform.OS === "web") {
-    return (
-      <View className={styleWrapper}>
-        <Text className={styleText}>NFC не поддерживается</Text>
-      </View>
-    );
-  }
-
   return (
     <SafeAreaView className={styleWrapper}>
       <TouchableOpacity onPress={readTag}>
@@ -75,23 +60,6 @@ const NFCReader = () => {
       <TouchableOpacity onPress={readTag}>
         <Text className={styleText}>Отменить сканирование</Text>
       </TouchableOpacity>
-      {/* <View className="h-24 relative py-2 items-center justify-center p-3 bg-black-200">
-        <Link
-          href="/scanner/[title]/qr"
-          className="m-auto"
-          replace
-          asChild
-        >
-          <Pressable>
-            <MaterialIcons
-              name="qr-code-scanner"
-              size={48}
-              color="white"
-              className="p-2 text-white bg-black-100 rounded-full border-2 border-solid border-secondary-200 flex items-center align-content-center justify-center p-5"
-            />
-          </Pressable>
-        </Link>
-      </View> */}
     </SafeAreaView>
   );
 };

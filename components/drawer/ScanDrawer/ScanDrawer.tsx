@@ -1,19 +1,21 @@
 import { View, Text } from "react-native";
 import React from "react";
 import ActionSheet, { useSheetPayload } from "react-native-actions-sheet";
+import { Colors } from "@/constants/styles-system";
 
 const ScanDrawer = () => {
   const payload = useSheetPayload("payload");
   return (
     <ActionSheet
       id="gestures"
+      zIndex={1000}
       gestureEnabled={true}
       indicatorStyle={{
         width: 100,
         height: 5,
-        backgroundColor: "black",
+        backgroundColor: Colors.primary,
       }}
-      containerStyle={{ backgroundColor: "white" }}
+      containerStyle={{ backgroundColor: "#e0e1dd" }}
       openAnimationConfig={{
         speed: 20,
         delay: 0,
@@ -35,16 +37,16 @@ const ScanDrawer = () => {
       >
         <Text
           style={{
-            color: "black",
+            color: Colors.primary,
             fontSize: 30,
             textAlign: "center",
           }}
         >
-          Hello, swipe me up and down!
+          Привет, проведи по мне пальцем вверх-вниз!
         </Text>
         <Text
           style={{
-            color: "black",
+            color: Colors.primary,
             fontSize: 30,
             textAlign: "center",
           }}
@@ -57,58 +59,3 @@ const ScanDrawer = () => {
 };
 
 export default ScanDrawer;
-
-// import CustomButton from "@/components/ui/CustomButton";
-// import { Colors } from "@/constants/styles-system";
-// import React from "react";
-// import { Text, View } from "react-native";
-// import ActionSheet, { ActionSheetRef } from "react-native-actions-sheet";
-
-// interface ScanDrawerProps {
-//   children: React.ReactNode;
-//   data?:any
-// }
-
-// const ScanDrawer = React.forwardRef<ActionSheetRef, ScanDrawerProps>(
-//   ({ children, data }, ref) => {
-//     return (
-//       <ActionSheet
-//         gestureEnabled={true}
-//         ref={ref}
-//         containerStyle={{
-//           backgroundColor: Colors.black200,
-//           paddingHorizontal: 12,
-//           height: 500,
-//         }}
-//         indicatorStyle={{
-//           width: 100,
-//           height:8,
-//           backgroundColor: Colors.primary,
-//         }}
-//         openAnimationConfig={{
-//           speed: 20,
-//           delay: 0,
-//           velocity: 12,
-//         }}
-//         closeAnimationConfig={{
-//           speed: 20,
-//           delay: 0,
-//           velocity: 12,
-//         }}
-//       >
-//         <View
-//           style={{
-//             paddingHorizontal: 12,
-//             height: 500,
-//             alignItems: "center",
-//             justifyContent: "center",
-//           }}
-//         >
-//           {children}
-//         </View>
-//       </ActionSheet>
-//     );
-//   }
-// );
-
-// export default ScanDrawer;

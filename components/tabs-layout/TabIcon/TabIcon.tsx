@@ -14,11 +14,9 @@ const TabIcon = ({
 }) => {
   return (
     <View
-      className="mt-12 h-[68px] w-[68px] gap-1 align-center justify-center rounded-full"
+      className="mt-12 h-[66px] w-[66px] gap-1 align-center justify-center rounded-full"
       style={{
         backgroundColor: focused ? Colors.darkBlue : "transparent",
-        width: 66,
-        height: 66,
         marginTop: 30,
       }}
     >
