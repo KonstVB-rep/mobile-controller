@@ -13,25 +13,18 @@ import { Colors } from "@/constants/styles-system";
 import CustomButton from "@/components/ui/CustomButton";
 import { Overlay } from "../Overlay/Overlay";
 import { SheetManager } from "react-native-actions-sheet";
-// import ScanDrawer from "@/components/drawer/ScanDrawer/ScanDrawer";
 
 const QrCodeScanner = ({
   isOnFlashlight,
   permission,
   requestPermission
-  // setShowModal,
 }: {
   isOnFlashlight: boolean;
   permission: PermissionResponse,
   requestPermission: () => Promise<PermissionResponse>
-  // setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [scanned, setScanned] = useState<boolean>(false);
   const [showBtnScan, setShowBtnScan] = useState<boolean>(false);
-  // const [permission, requestPermission] = useCameraPermissions();
-  // const [dataScan, setDataScan] = useState<{ type: string; data: string } | null>(null);
-
-  // const actionSheetRef = useRef<ActionSheetRef>(null);
 
   const qrIsLocked = useRef<boolean>(false);
 
@@ -53,16 +46,7 @@ const QrCodeScanner = ({
     data: string;
   }) => {
     if (data && !qrIsLocked.current) {
-      console.log(
-        `Bar code with type ${type} and data ${data} has been scanned!`
-      );
       qrIsLocked.current = true;
-      // await new Promise((resolve) => setTimeout(resolve, 500))
-      //   .then(() => {
-      //     setScanned(true);
-      //     setDataScan({ type, data });
-      //   })
-      //   .then(() => actionSheetRef.current?.show())
       await new Promise((resolve) => setTimeout(resolve, 500))
       .then(() => setScanned(true))
       .then(() => SheetManager.show('gestures', {

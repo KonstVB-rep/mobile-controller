@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { View, Text, SafeAreaView } from "react-native";
+import { View, Text } from "react-native";
 
 import CustomButton from "@/components/ui/CustomButton";
 import { useAuth } from "@/context/AuthContext";

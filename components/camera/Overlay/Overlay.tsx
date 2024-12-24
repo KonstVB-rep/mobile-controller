@@ -1,5 +1,5 @@
 import { Canvas, DiffRect, rect, rrect } from "@shopify/react-native-skia";
-import { Dimensions, Platform, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 
 import { Colors, HEADER_HEIGHT } from "@/constants/styles-system";
 
@@ -33,15 +33,12 @@ export const Overlay = ({
 
   if (!selectedInner) {
     console.warn(`Invalid keyValue: "${keyValue}"`);
-    return null; // Возвращаем null, если выбранный прямоугольник отсутствует
+    return null;
   }
 
   return (
     <Canvas
       style={{ flex: 1, ...StyleSheet.absoluteFillObject }}
-      //   className={`${Platform.OS === "android"} ? 'flex-1' : ${
-      //     StyleSheet.absoluteFillObject
-      //   }`}
     >
       <DiffRect
         inner={selectedInner}

@@ -83,7 +83,7 @@ export const signOut = async () => {
     if(jwt){
       await sessionClear();
     }
-    console.log("signOut");
+
     if (Platform.OS === "android") {
       BackHandler.exitApp();
     }

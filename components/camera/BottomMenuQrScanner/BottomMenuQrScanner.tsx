@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { PermissionResponse, useCameraPermissions } from "expo-camera";
+import { PermissionResponse } from "expo-camera";
 import { Link } from "expo-router";
 import { View, Pressable, TouchableOpacity } from "react-native";
 

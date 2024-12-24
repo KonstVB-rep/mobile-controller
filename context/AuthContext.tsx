@@ -28,11 +28,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Проверка состояния пользователя при загрузке приложения
   useEffect(() => {
+    let timeout:ReturnType<typeof setTimeout> | null = null;
     const checkAuth = async () => {
       try {
         // Получение JWT из SecureStore
         const jwt = await SecureStore.getItemAsync("jwtToken");
-        console.log("jwt", jwt);
+
         if (jwt) {
           client.setJWT(jwt);
 
@@ -42,17 +43,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           setIsAuthenticated(true);
         }
       } catch (error) {
+
         console.error("Время сессии истекло.Войдите в систему заново.", error);
         await sessionClear();
-        console.log("sessionClear");
         setUser(null);
         setIsAuthenticated(false);
+
       } finally {
-        setIsLoading(false);
+        timeout = setTimeout(() => setIsLoading(false), 1000);
       }
     };
 
     checkAuth();
+
+    return () => clearTimeout(timeout!);
   }, []);
 
   return (

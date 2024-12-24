@@ -1,6 +1,6 @@
 import * as React from "react";
 import Svg, { Path, SvgProps } from "react-native-svg";
-const NotSupportNfc = (props: SvgProps) => (
+const NotSupportNfcImage = (props: SvgProps) => (
   <Svg viewBox="0 0 128 128" {...props}>
     <Path
       d="M126 127.88a2 2 0 0 1-2-1.94c-.48-15.91-1.48-42-2.11-44.47l-.21-.77c-.78-3-1.53-5.89-3.58-7.09-2.9-1.68-13.61-7-13.71-7a2 2 0 0 1 1.75-3.61c.45.22 11 5.39 14 7.15 3.49 2 4.53 6 5.45 9.54l.19.75c1 3.66 2.12 41.11 2.25 45.37a2 2 0 0 1-1.94 2.06z"
@@ -38,4 +38,4 @@ const NotSupportNfc = (props: SvgProps) => (
     />
   </Svg>
 );
-export default NotSupportNfc;
+export default NotSupportNfcImage;

@@ -2,9 +2,6 @@ import React from "react";
 import { SafeAreaView, ScrollView } from "react-native";
 
 import ServiceItem from "@/components/service/ServiceItem/ServiceItem";
-import { SheetManager } from "react-native-actions-sheet";
-import { useAuth } from "@/context/AuthContext";
-
 
 const DATA = [
   {

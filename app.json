@@ -1,10 +1,14 @@
 {
   "expo": {
-    "name": "mobile-controller",
-    "slug": "mobile-controller",
+    "name": "Контроллер",
+    "slug": "controller",
     "description": "Приложения для контроля прохода путем сканирования qr кодов и считывания NFC тегов",
     "version": "1.0.0",
-    "platforms": ["ios", "android", "web"],
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "mobile-controller",
@@ -22,8 +26,7 @@
       "backgroundColor": "#161622"
     },
     "ios": {
-      "supportsTablet": false,
-      "usesNonExemptEncryption": false
+      "supportsTablet": false
     },
     "android": {
       "adaptiveIcon": {
@@ -32,11 +35,10 @@
       },
       "permissions": [
         "android.permission.CAMERA",
-        "android.permission.RECORD_AUDIO",
         "android.permission.NFC",
         "android.permission.NFC_TRANSACTION_EVENT"
       ],
-      "package": "com.ertel.MobileController"
+      "package": "com.konst_vb.controller"
     },
     "web": {
       "bundler": "metro",
@@ -82,7 +84,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "2847d3b2-c54c-4064-a3a7-1715e4ec1253"
+        "projectId": "2da5cbfa-6f7d-43f6-be70-f86c2fae96e8"
       }
     },
     "owner": "konst_vb"
